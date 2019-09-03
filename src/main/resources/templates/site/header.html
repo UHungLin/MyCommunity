@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<header class="bg-white sticky-top">
+    <div class="container">
+        <!-- 导航 -->
+        <nav class="navbar navbar-expand-lg navbar-dark">
+            <!-- logo -->
+            <a class="navbar-brand" href="https://www.bilibili.com/"></a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <!-- 功能 -->
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item ml-3 btn-group-vertical">
+                        <a class="nav-link" th:href="@{/index}" style="color: #444">首页</a>
+                    </li>
+                    <li class="nav-item ml-3 btn-group-vertical" th:if="${loginUser!=null}">
+                        <a class="nav-link position-relative" th:href="@{/letter/list}" style="color: #444">消息<span class="badge badge-danger" th:text="${allUnreadCount!=0?allUnreadCount:''}">12</span></a>
+                    </li>
+
+                    <!-- 搜索 -->
+                    <form class="ml-5 form-inline my-2 my-lg-0" th:action="@{/search}">
+                        <input class="form-control mr-sm-2" type="search" aria-label="Search" th:value="${keyword}"/>
+                        <button class="btn btn-outline-primary my-2 my-sm-0" type="submit">搜索</button>
+                    </form>
+
+                    <!--占位作用-->
+                    <div class="ml-3"></div>
+                    <div class="ml-5"></div>
+                    <div class="ml-5"></div>
+                    <div class="ml-5"></div>
+
+                    <div class="ml-3"></div>
+                    <div class="ml-5"></div>
+                    <div class="ml-5"></div>
+                    <div class="ml-5"></div>
+
+                    <li class="nav-item ml-5 btn-group-vertical" th:if="${loginUser==null}">
+                        <a class="nav-link" th:href="@{/register}" style="color: #444">注册</a>
+                    </li>
+                    <li class="nav-item ml-3 btn-group-vertical" th:if="${loginUser==null}">
+                        <a class="nav-link" th:href="@{/login}" style="color: #444">登录</a>
+                    </li>
+                    <li class="nav-item ml-3 btn-group-vertical dropdown" th:if="${loginUser!=null}">
+                        <a class="nav-link dropdown-item" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <img th:src="${loginUser.headerUrl}" class="rounded-circle" style="width:45px;"/>
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <a class="dropdown-item text-center" th:href="@{|/user/profile/${loginUser.id}|}">个人主页</a>
+                            <a class="dropdown-item text-center" th:href="@{/user/setting}">账号设置</a>
+                            <a class="dropdown-item text-center" th:href="@{/logout}">退出登录</a>
+                            <div class="dropdown-divider"></div>
+                            <span class="dropdown-item text-center text-secondary" th:utext="${loginUser.username}">user</span>
+                        </div>
+                    </li>
+                </ul>
+
+            </div>
+        </nav>
+    </div>
+</header>
+

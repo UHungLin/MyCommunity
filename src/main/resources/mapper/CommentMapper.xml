@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="fun.linyuhong.myCommunity.dao.CommentMapper" >
+  <!--<resultMap id="BaseResultMap" type="fun.linyuhong.myCommunity.entity.Comment" >-->
+    <!--<constructor >-->
+      <!--<idArg column="id" jdbcType="INTEGER" javaType="java.lang.Integer" />-->
+      <!--<arg column="user_id" jdbcType="INTEGER" javaType="java.lang.Integer" />-->
+      <!--<arg column="entity_type" jdbcType="INTEGER" javaType="java.lang.Integer" />-->
+      <!--<arg column="entity_id" jdbcType="INTEGER" javaType="java.lang.Integer" />-->
+      <!--<arg column="target_id" jdbcType="INTEGER" javaType="java.lang.Integer" />-->
+      <!--<arg column="status" jdbcType="INTEGER" javaType="java.lang.Integer" />-->
+      <!--<arg column="create_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />-->
+    <!--</constructor>-->
+  <!--</resultMap>-->
+  <!--<resultMap id="ResultMapWithBLOBs" type="fun.linyuhong.myCommunity.entity.Comment" >-->
+    <!--<constructor >-->
+      <!--<idArg column="id" jdbcType="INTEGER" javaType="java.lang.Integer" />-->
+      <!--<arg column="user_id" jdbcType="INTEGER" javaType="java.lang.Integer" />-->
+      <!--<arg column="entity_type" jdbcType="INTEGER" javaType="java.lang.Integer" />-->
+      <!--<arg column="entity_id" jdbcType="INTEGER" javaType="java.lang.Integer" />-->
+      <!--<arg column="target_id" jdbcType="INTEGER" javaType="java.lang.Integer" />-->
+      <!--<arg column="status" jdbcType="INTEGER" javaType="java.lang.Integer" />-->
+      <!--<arg column="create_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />-->
+      <!--<arg column="content" jdbcType="LONGVARCHAR" javaType="java.lang.String" />-->
+    <!--</constructor>-->
+  <!--</resultMap>-->
+
+
+
+  <!--<select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Integer" >-->
+    <!--select -->
+    <!--<include refid="Base_Column_List" />-->
+    <!--,-->
+    <!--<include refid="Blob_Column_List" />-->
+    <!--from comment-->
+    <!--where id = #{id,jdbcType=INTEGER}-->
+  <!--</select>-->
+  <!--<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >-->
+    <!--delete from comment-->
+    <!--where id = #{id,jdbcType=INTEGER}-->
+  <!--</delete>-->
+  <!--<insert id="insert" parameterType="fun.linyuhong.myCommunity.entity.Comment" >-->
+    <!--insert into comment (id, user_id, entity_type, -->
+      <!--entity_id, target_id, status, -->
+      <!--create_time, content)-->
+    <!--values (#{id,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, #{entityType,jdbcType=INTEGER}, -->
+      <!--#{entityId,jdbcType=INTEGER}, #{targetId,jdbcType=INTEGER}, #{status,jdbcType=INTEGER}, -->
+      <!--#{createTime,jdbcType=TIMESTAMP}, #{content,jdbcType=LONGVARCHAR})-->
+  <!--</insert>-->
+  <!--<insert id="insertSelective" parameterType="fun.linyuhong.myCommunity.entity.Comment" >-->
+    <!--insert into comment-->
+    <!--<trim prefix="(" suffix=")" suffixOverrides="," >-->
+      <!--<if test="id != null" >-->
+        <!--id,-->
+      <!--</if>-->
+      <!--<if test="userId != null" >-->
+        <!--user_id,-->
+      <!--</if>-->
+      <!--<if test="entityType != null" >-->
+        <!--entity_type,-->
+      <!--</if>-->
+      <!--<if test="entityId != null" >-->
+        <!--entity_id,-->
+      <!--</if>-->
+      <!--<if test="targetId != null" >-->
+        <!--target_id,-->
+      <!--</if>-->
+      <!--<if test="status != null" >-->
+        <!--status,-->
+      <!--</if>-->
+      <!--<if test="createTime != null" >-->
+        <!--create_time,-->
+      <!--</if>-->
+      <!--<if test="content != null" >-->
+        <!--content,-->
+      <!--</if>-->
+    <!--</trim>-->
+    <!--<trim prefix="values (" suffix=")" suffixOverrides="," >-->
+      <!--<if test="id != null" >-->
+        <!--#{id,jdbcType=INTEGER},-->
+      <!--</if>-->
+      <!--<if test="userId != null" >-->
+        <!--#{userId,jdbcType=INTEGER},-->
+      <!--</if>-->
+      <!--<if test="entityType != null" >-->
+        <!--#{entityType,jdbcType=INTEGER},-->
+      <!--</if>-->
+      <!--<if test="entityId != null" >-->
+        <!--#{entityId,jdbcType=INTEGER},-->
+      <!--</if>-->
+      <!--<if test="targetId != null" >-->
+        <!--#{targetId,jdbcType=INTEGER},-->
+      <!--</if>-->
+      <!--<if test="status != null" >-->
+        <!--#{status,jdbcType=INTEGER},-->
+      <!--</if>-->
+      <!--<if test="createTime != null" >-->
+        <!--#{createTime,jdbcType=TIMESTAMP},-->
+      <!--</if>-->
+      <!--<if test="content != null" >-->
+        <!--#{content,jdbcType=LONGVARCHAR},-->
+      <!--</if>-->
+    <!--</trim>-->
+  <!--</insert>-->
+  <!--<update id="updateByPrimaryKeySelective" parameterType="fun.linyuhong.myCommunity.entity.Comment" >-->
+    <!--update comment-->
+    <!--<set >-->
+      <!--<if test="userId != null" >-->
+        <!--user_id = #{userId,jdbcType=INTEGER},-->
+      <!--</if>-->
+      <!--<if test="entityType != null" >-->
+        <!--entity_type = #{entityType,jdbcType=INTEGER},-->
+      <!--</if>-->
+      <!--<if test="entityId != null" >-->
+        <!--entity_id = #{entityId,jdbcType=INTEGER},-->
+      <!--</if>-->
+      <!--<if test="targetId != null" >-->
+        <!--target_id = #{targetId,jdbcType=INTEGER},-->
+      <!--</if>-->
+      <!--<if test="status != null" >-->
+        <!--status = #{status,jdbcType=INTEGER},-->
+      <!--</if>-->
+      <!--<if test="createTime != null" >-->
+        <!--create_time = #{createTime,jdbcType=TIMESTAMP},-->
+      <!--</if>-->
+      <!--<if test="content != null" >-->
+        <!--content = #{content,jdbcType=LONGVARCHAR},-->
+      <!--</if>-->
+    <!--</set>-->
+    <!--where id = #{id,jdbcType=INTEGER}-->
+  <!--</update>-->
+  <!--<update id="updateByPrimaryKeyWithBLOBs" parameterType="fun.linyuhong.myCommunity.entity.Comment" >-->
+    <!--update comment-->
+    <!--set user_id = #{userId,jdbcType=INTEGER},-->
+      <!--entity_type = #{entityType,jdbcType=INTEGER},-->
+      <!--entity_id = #{entityId,jdbcType=INTEGER},-->
+      <!--target_id = #{targetId,jdbcType=INTEGER},-->
+      <!--status = #{status,jdbcType=INTEGER},-->
+      <!--create_time = #{createTime,jdbcType=TIMESTAMP},-->
+      <!--content = #{content,jdbcType=LONGVARCHAR}-->
+    <!--where id = #{id,jdbcType=INTEGER}-->
+  <!--</update>-->
+  <!--<update id="updateByPrimaryKey" parameterType="fun.linyuhong.myCommunity.entity.Comment" >-->
+    <!--update comment-->
+    <!--set user_id = #{userId,jdbcType=INTEGER},-->
+      <!--entity_type = #{entityType,jdbcType=INTEGER},-->
+      <!--entity_id = #{entityId,jdbcType=INTEGER},-->
+      <!--target_id = #{targetId,jdbcType=INTEGER},-->
+      <!--status = #{status,jdbcType=INTEGER},-->
+      <!--create_time = #{createTime,jdbcType=TIMESTAMP}-->
+    <!--where id = #{id,jdbcType=INTEGER}-->
+  <!--</update>-->
+
+
+
+  <sql id="Base_Column_List" >
+    id, user_id, entity_type, entity_id, target_id, status, create_time
+  </sql>
+  <sql id="Blob_Column_List" >
+    content
+  </sql>
+
+  <sql id="selectFields">
+        id, user_id, entity_type, entity_id, target_id, content, status, create_time
+    </sql>
+
+  <sql id="insertFields">
+        user_id, entity_type, entity_id, target_id, content, status, create_time
+    </sql>
+
+
+  <select id="selectCommentsByEntity" resultType="Comment">
+    select <include refid="selectFields"></include>
+    from comment
+    where status = 0
+    and entity_type = #{entityType}
+    and entity_id = #{entityId}
+    order by create_time asc
+    limit #{offset}, #{limit}
+  </select>
+
+  <select id="selectCountByEntity" resultType="int">
+        select count(id)
+        from comment
+        where status = 0
+        and entity_type = #{entityType}
+        and entity_id = #{entityId}
+    </select>
+
+  <!--<insert id="insertComment" parameterType="Comment">-->
+    <!--insert into comment (<include refid="selectFields" ></include> )-->
+    <!--values(#{userId},#{entityType},#{entityId},#{targetId},#{content},#{status},#{createTime})-->
+  <!--</insert>-->
+  <insert id="insertComment" parameterType="Comment" keyProperty="id">
+    insert into comment(<include refid="insertFields" />)
+    values(#{userId},#{entityType},#{entityId},#{targetId},#{content},#{status},#{createTime})
+  </insert>
+</mapper>

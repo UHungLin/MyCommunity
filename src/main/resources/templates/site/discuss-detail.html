@@ -1,0 +1,198 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<link rel="icon" type="image/x-icon" th:href="@{/img/icon.png}"/>
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" crossorigin="anonymous">
+	<link rel="stylesheet" th:href="@{/css/global.css}" />
+	<link rel="stylesheet" th:href="@{/css/discuss-detail.css}" />
+	<title>帖子详情</title>
+</head>
+<body>
+	<div class="nk-container">
+		 <!--头部 -->
+		<header class="bg-dark sticky-top" th:replace="/site/header :: header">
+
+		</header>
+
+        <!-- 内容 -->
+        <div class="main">
+            <!-- 帖子详情 -->
+            <div class="container">
+                <!-- 标题 -->
+                <h6 class="mb-4">
+                    <img th:src="@{/img/icon-discuss.jpg}" style="width: 25px; height: 25px; background-size: 25px 25px;"/>
+                    <span th:utext="${post.title}">备战春招，面试刷题跟他复习，一个月全搞定！</span>
+                    <!--<div class="float-right">-->
+                        <!--<input type="hidden" id="postId" th:value="${post.id}">-->
+                        <!--<button type="button" class="btn btn-danger btn-sm" id="topBtn"-->
+                                <!--th:disabled="${post.type==1}" sec:authorize="hasAnyAuthority('moderator')">置顶</button>-->
+                        <!--<button type="button" class="btn btn-danger btn-sm" id="wonderfulBtn"-->
+                                <!--th:disabled="${post.status==1}" sec:authorize="hasAnyAuthority('moderator')">加精</button>-->
+                        <!--<button type="button" class="btn btn-danger btn-sm" id="deleteBtn"-->
+                                <!--th:disabled="${post.status==2}" sec:authorize="hasAnyAuthority('admin')">删除</button>-->
+                    <!--</div>-->
+                </h6>
+                <!-- 作者 -->
+                <div class="media pb-3 border-bottom">
+                    <a href="profile.html">
+                        <img th:src="${user.headerUrl}" class="align-self-start mr-4 rounded-circle user-header" alt="用户头像" >
+                    </a>
+                    <div class="media-body">
+                        <div class="mt-0 text-warning" th:utext="${user.username}">寒江雪</div>
+                        <div class="text-muted mt-3">
+                            发布于 <b th:text="${#dates.format(post.createTime,'yyyy-MM-dd HH:mm:ss')}">2019-04-15 15:32:18</b>
+                            <ul class="d-inline float-right">
+                                <!--<li class="d-inline ml-2">-->
+                                    <!--<a href="javascript:;" th:onclick="|like(this,1,${post.id},${post.userId},${post.id});|" class="text-primary">-->
+                                        <!--<b th:text="${likeStatus==1?'已赞':'赞'}">赞</b> <i th:text="${likeCount}">11</i>-->
+                                    <!--</a>-->
+                                <!--</li>-->
+                                <li class="d-inline ml-2">|</li>
+                                <li class="d-inline ml-2"><a href="#replyform" class="text-primary">回帖 <i th:text="${post.commentCount}">7</i></a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <!-- 正文 -->
+                <div class="mt-4 mb-3 content" th:utext="${post.content}">
+                    金三银四的金三已经到了，你还沉浸在过年的喜悦中吗？
+                    如果是，那我要让你清醒一下了：目前大部分公司已经开启了内推，正式网申也将在3月份陆续开始，金三银四，春招的求职黄金时期已经来啦！！！
+                    再不准备，作为19应届生的你可能就找不到工作了。。。作为20届实习生的你可能就找不到实习了。。。
+                    现阶段时间紧，任务重，能做到短时间内快速提升的也就只有算法了，
+                    那么算法要怎么复习？重点在哪里？常见笔试面试算法题型和解题思路以及最优代码是怎样的？
+                    跟左程云老师学算法，不仅能解决以上所有问题，还能在短时间内得到最大程度的提升！！！
+                </div>
+            </div>
+            <!-- 回帖 -->
+            <div class="container mt-3">
+                <!-- 回帖数量 -->
+                <div class="row">
+                    <div class="col-8">
+                        <h6><b class="square"></b> <i th:text="${post.commentCount}">30</i>条回帖</h6>
+                    </div>
+                    <div class="col-4 text-right">
+                        <a href="#replyform" class="btn btn-primary btn-sm">&nbsp;&nbsp;回&nbsp;&nbsp;帖&nbsp;&nbsp;</a>
+                    </div>
+                </div>
+                <!-- 回帖列表 -->
+                <ul class="list-unstyled mt-4">
+                    <li class="media pb-3 pt-3 mb-3 border-bottom" th:each="cvo:${comments}">
+                        <a href="profile.html">
+                            <img th:src="${cvo.user.headerUrl}" class="align-self-start mr-4 rounded-circle user-header" alt="用户头像" >
+                        </a>
+                        <div class="media-body">
+                            <div class="mt-0">
+                                <span class="font-size-12 text-success" th:utext="${cvo.user.username}">掉脑袋切切</span>
+                                <span class="badge badge-secondary float-right floor">
+									<i th:text="${page.offset + cvoStat.count}">1</i>#
+								</span>
+                            </div>
+                            <div class="mt-2" th:utext="${cvo.comment.content}">
+                                这开课时间是不是有点晚啊。。。
+                            </div>
+                            <div class="mt-4 text-muted font-size-12">
+                                <span>发布于 <b th:text="${#dates.format(cvo.comment.createTime,'yyyy-MM-dd HH:mm:ss')}">2019-04-15 15:32:18</b></span>
+                                <ul class="d-inline float-right">
+                                    <!--<li class="d-inline ml-2">-->
+                                        <!--<a href="javascript:;" th:onclick="|like(this,2,${cvo.comment.id},${cvo.comment.userId},${post.id});|" class="text-primary">-->
+                                            <!--<b th:text="${cvo.likeStatus==1?'已赞':'赞'}">赞</b>(<i th:text="${cvo.likeCount}">1</i>)-->
+                                        <!--</a>-->
+                                    <!--</li>-->
+                                    <li class="d-inline ml-2">|</li>
+                                    <li class="d-inline ml-2"><a href="#" class="text-primary">回复(<i th:text="${cvo.replyCount}">2</i>)</a></li>
+                                </ul>
+                            </div>
+                            <!-- 回复列表 -->
+                            <ul class="list-unstyled mt-4 bg-gray p-3 font-size-12 text-muted">
+
+                                <li class="pb-3 pt-3 mb-3 border-bottom" th:each="rvo:${cvo.replys}">
+                                    <div>
+										<span th:if="${rvo.target==null}">
+											<b class="text-info" th:text="${rvo.user.username}">寒江雪</b>:&nbsp;&nbsp;
+										</span>
+                                        <span th:if="${rvo.target!=null}">
+											<i class="text-info" th:text="${rvo.user.username}">Sissi</i> 回复
+											<b class="text-info" th:text="${rvo.target.username}">寒江雪</b>:&nbsp;&nbsp;
+										</span>
+                                        <span th:utext="${rvo.reply.content}">这个是直播时间哈，觉得晚的话可以直接看之前的完整录播的~</span>
+                                    </div>
+                                    <div class="mt-3">
+                                        <span th:text="${#dates.format(rvo.reply.createTime,'yyyy-MM-dd HH:mm:ss')}">2019-04-15 15:32:18</span>
+                                        <ul class="d-inline float-right">
+                                            <!--<li class="d-inline ml-2">-->
+                                                <!--<a href="javascript:;" th:onclick="|like(this,2,${rvo.reply.id},${rvo.reply.userId},${post.id});|" class="text-primary">-->
+                                                    <!--<b th:text="${rvo.likeStatus==1?'已赞':'赞'}">赞</b>(<i th:text="${rvo.likeCount}">1</i>)-->
+                                                <!--</a>-->
+                                            <!--</li>-->
+                                            <li class="d-inline ml-2">|</li>
+                                            <li class="d-inline ml-2"><a th:href="|#huifu-${rvoStat.count}|" data-toggle="collapse" class="text-primary">回复</a></li>
+                                        </ul>
+                                        <div th:id="|huifu-${rvoStat.count}|" class="mt-4 collapse">
+                                            <form method="post" th:action="@{|/comment/add/${post.id}|}">
+                                                <div>
+                                                    <input type="text" class="input-size" name="content" th:placeholder="|回复${rvo.user.username}|"/>
+                                                    <input type="hidden" name="entityType" value="2">
+                                                    <input type="hidden" name="entityId" th:value="${cvo.comment.id}">
+                                                    <input type="hidden" name="targetId" th:value="${rvo.user.id}">
+                                                </div>
+                                                <div class="text-right mt-2">
+                                                    <button type="submit" class="btn btn-primary btn-sm" onclick="#">&nbsp;&nbsp;回&nbsp;&nbsp;复&nbsp;&nbsp;</button>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </li>
+
+                                <!-- 回复输入框 -->
+                                <li class="pb-3 pt-3">
+                                    <form method="post" th:action="@{|/comment/add/${post.id}|}">
+                                        <div>
+                                            <input type="text" class="input-size" name="content" placeholder="请输入你的观点"/>
+                                            <input type="hidden" name="entityType" value="2">
+                                            <input type="hidden" name="entityId" th:value="${cvo.comment.id}">
+                                        </div>
+                                        <div class="text-right mt-2">
+                                            <button type="submit" class="btn btn-primary btn-sm" onclick="#">&nbsp;&nbsp;回&nbsp;&nbsp;复&nbsp;&nbsp;</button>
+                                        </div>
+                                    </form>
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
+                </ul>
+                <!-- 分页 -->
+                <nav class="mt-5" th:replace="/site/pagination :: nav">
+
+                </nav>
+            </div>
+            <!-- 回帖输入 -->
+            <div class="container mt-3">
+                <form class="replyform" method="post" th:action="@{|/comment/add/${post.id}|}">
+                    <p class="mt-3">
+                        <a name="replyform"></a>
+                        <textarea name="content" placeholder="在这里畅所欲言你的看法吧!"></textarea>
+                        <input type="hidden" name="entityType" value="1">
+                        <input type="hidden" name="entityId" th:value="${post.id}">
+                    </p>
+                    <p class="text-right">
+                        <button type="submit" class="btn btn-primary btn-sm">&nbsp;&nbsp;回&nbsp;&nbsp;帖&nbsp;&nbsp;</button>
+                    </p>
+                </form>
+            </div>
+        </div>
+
+		 <!--尾部 -->
+		<footer class="bg-dark" th:replace="/site/footer :: footer">
+
+		</footer>
+	</div>
+	<script src="https://code.jquery.com/jquery-3.3.1.min.js" crossorigin="anonymous"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" crossorigin="anonymous"></script>
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" crossorigin="anonymous"></script>
+	<script th:src="@{/js/global.js}"></script>
+	<script th:src="@{/js/discuss.js}"></script>
+
+</body>
+</html>

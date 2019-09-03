@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Spring Security Example</title>
+</head>
+<body>
+
+<!--onsubmit="return check()"-->
+<form method="post" action="https://www.baidu.com" onsubmit="return check()">　　
+
+    <span>用户名</span>
+    <input type="text" id="uid" name="uid" />
+    <input type="text" id="nid" name="uid" />
+    <button style="size: 500px" type="submit" />
+</form>
+<script src="https://code.jquery.com/jquery-3.3.1.min.js" crossorigin="anonymous"></script>
+<script type="text/javascript">
+
+    function check(){
+        // var uid = $("#uid").val();
+        var uid = $("*[name='uid']").val();
+        if (uid.trim().length == 0) {
+
+            alert("内容不能为空");
+            return false;
+        }
+        alert(uid);
+        return true;
+
+
+    }
+
+</script>
+
+</body>
+</html>

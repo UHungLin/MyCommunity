@@ -1,0 +1,67 @@
+# ServerProperties
+server:
+  port: 8080
+  servlet:
+    # url访问路径名
+    context-path: ''
+
+
+spring:
+  # DataSourceProperties
+  datasource:
+    driver-class-name=com: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/myCommunity?characterEncoding=utf-8&useSSL=false&serverTimezone=Hongkong
+    username: root
+    password: root
+#    默认数据源
+    type: com.zaxxer.hikari.HikariDataSource
+    hikari:
+      maximum-pool-size: 15
+      minimum-idle: 5
+      idle-timeout: 30000
+
+  # ThymeleafProperties
+  thymeleaf:
+    cache: false
+
+  # MailProperties
+  mail:
+    host: smtp.qq.com
+    port: 465
+    username: 2105367070@qq.com
+    password: iuatknwcuovoifhj
+    protocol: smtps
+    properties.mail.smtp.ssl.enable: true
+
+  # RedisProperties
+  redis:
+    database: 2
+    host: 127.0.0.1
+    port: 6379
+
+
+mybatis:
+  mapper-locations:
+    - classpath:mapper/*.xml
+  type-aliases-package: fun.linyuhong.myCommunity.entity
+  configuration:
+    useGeneratedKeys: true
+    mapUnderscoreToCamelCase: true
+
+
+## token 加密密钥
+#token:
+#  secret: "123456"
+#  # token 过期时间，以秒为单位，604800 是 一星期
+#  expiration: 604800
+#  header: X_Auth_Token
+
+# 配置发送邮件时的域名
+domain: http://127.0.0.1:8080
+# 上传头像的域名
+upload: g:/work/data/upload
+
+
+
+
+
