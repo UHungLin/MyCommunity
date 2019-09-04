@@ -1,6 +1,7 @@
 package fun.linyuhong.myCommunity.service;
 
 import fun.linyuhong.myCommunity.entity.LoginTicket;
+import fun.linyuhong.myCommunity.entity.Message;
 import fun.linyuhong.myCommunity.entity.User;
 import fun.linyuhong.myCommunity.vo.UserVo;
 
@@ -23,5 +24,8 @@ public interface IUserService {
     Map<String, Object> register(User user);
 
     int activation(int userId, String code);
+
+    UserVo findUserByName(String username);
+
 
 }

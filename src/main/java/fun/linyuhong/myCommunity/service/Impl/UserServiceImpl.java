@@ -3,6 +3,7 @@ package fun.linyuhong.myCommunity.service.Impl;
 import fun.linyuhong.myCommunity.common.Const;
 import fun.linyuhong.myCommunity.dao.UserMapper;
 import fun.linyuhong.myCommunity.entity.LoginTicket;
+import fun.linyuhong.myCommunity.entity.Message;
 import fun.linyuhong.myCommunity.entity.User;
 import fun.linyuhong.myCommunity.service.IUserService;
 import fun.linyuhong.myCommunity.util.*;
@@ -110,17 +111,21 @@ public class UserServiceImpl implements IUserService {
 
         User user = userMapper.selectByPrimaryKey(userId);
         if (user != null) {
-            UserVo userVo = new UserVo();
-            // 加密
-            userVo.setId(XORUtil.encryptId(user.getId(), Const.getIdEncodeKeys.userIdKeys));
-            userVo.setUsername(user.getUsername());
-            userVo.setHeaderUrl(user.getHeaderUrl());
-            userVo.setType(user.getType());
-            userVo.setEmail(user.getEmail());
-            userVo.setCreateTime(user.getCreateTime());
-            return userVo;
+            return assembleUser(user);
         }
         return null;
+    }
+
+    private UserVo assembleUser(User user) {
+        UserVo userVo = new UserVo();
+        // 加密
+        userVo.setId(XORUtil.encryptId(user.getId(), Const.getIdEncodeKeys.userIdKeys));
+        userVo.setUsername(user.getUsername());
+        userVo.setHeaderUrl(user.getHeaderUrl());
+        userVo.setType(user.getType());
+        userVo.setEmail(user.getEmail());
+        userVo.setCreateTime(user.getCreateTime());
+        return userVo;
     }
 
     @Override
@@ -214,5 +219,15 @@ public class UserServiceImpl implements IUserService {
             return Const.active.ACTIVATION_FAILURE;
         }
     }
+
+    @Override
+    public UserVo findUserByName(String username) {
+        User user = userMapper.selectByUsername(username);
+        if (user == null) {
+            return null;
+        }
+       return assembleUser(user);
+    }
+
 
 }

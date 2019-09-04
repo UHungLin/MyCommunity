@@ -1,37 +1,152 @@
-<!DOCTYPE html>
-<html lang="en">
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="utf-8">
-    <title>Spring Security Example</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="icon" type="image/x-icon" th:href="@{/img/icon.png}"/>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" crossorigin="anonymous">
+    <link rel="stylesheet" th:href="@{/css/global.css}" />
+</head>
 </head>
 <body>
 
-<!--onsubmit="return check()"-->
-<form method="post" action="https://www.baidu.com" onsubmit="return check()">　　
+<!-- 回帖列表 -->
+<ul class="list-unstyled mt-4">
+    <li class="media pb-3 pt-3 mb-3 border-bottom" th:each="cvo:${comments}">
+        <a href="profile.html">
+            <img th:src="${cvo.user.headerUrl}" class="align-self-start mr-4 rounded-circle user-header" alt="用户头像" >
+        </a>
+        <div class="media-body">
+            <div class="mt-0">
+                <span class="font-size-12 text-success" th:utext="${cvo.user.username}">掉脑袋切切</span>
+                <span class="badge badge-secondary float-right floor">
+									<i th:text="${page.offset + cvoStat.count}">1</i>#
+								</span>
+            </div>
+            <div class="mt-2" th:utext="${cvo.comment.content}">
+                这开课时间是不是有点晚啊。。。
+            </div>
+            <div class="mt-4 text-muted font-size-12">
+                <span>发布于 <b th:text="${#dates.format(cvo.comment.createTime,'yyyy-MM-dd HH:mm:ss')}">2019-04-15 15:32:18</b></span>
+                <ul class="d-inline float-right">
+                    <!--<li class="d-inline ml-2">-->
+                    <!--<a href="javascript:;" th:onclick="|like(this,2,${cvo.comment.id},${cvo.comment.userId},${post.id});|" class="text-primary">-->
+                    <!--<b th:text="${cvo.likeStatus==1?'已赞':'赞'}">赞</b>(<i th:text="${cvo.likeCount}">1</i>)-->
+                    <!--</a>-->
+                    <!--</li>-->
+                    <li class="d-inline ml-2">|</li>
+                    <li class="d-inline ml-2"><a href="#" class="text-primary">回复(<i th:text="${cvo.replyCount}">2</i>)</a></li>
+                </ul>
+            </div>
+            <!-- 回复列表 -->
+            <ul class="list-unstyled mt-4 bg-gray p-3 font-size-12 text-muted">
 
-    <span>用户名</span>
-    <input type="text" id="uid" name="uid" />
-    <input type="text" id="nid" name="uid" />
-    <button style="size: 500px" type="submit" />
-</form>
+                <li class="pb-3 pt-3 mb-3 border-bottom" th:each="rvo:${cvo.replys}">
+                    <div>
+										<span th:if="${rvo.target==null}">
+											<b class="text-info" th:text="${rvo.user.username}">寒江雪</b>:&nbsp;&nbsp;
+										</span>
+                        <span th:if="${rvo.target!=null}">
+											<i class="text-info" th:text="${rvo.user.username}">Sissi</i> 回复
+											<b class="text-info" th:text="${rvo.target.username}">寒江雪</b>:&nbsp;&nbsp;
+										</span>
+                        <span th:utext="${rvo.reply.content}">这个是直播时间哈，觉得晚的话可以直接看之前的完整录播的~</span>
+                    </div>
+                    <div class="mt-3">
+                        <span th:text="${#dates.format(rvo.reply.createTime,'yyyy-MM-dd HH:mm:ss')}">2019-04-15 15:32:18</span>
+                        <ul class="d-inline float-right">
+                            <!--<li class="d-inline ml-2">-->
+                            <!--<a href="javascript:;" th:onclick="|like(this,2,${rvo.reply.id},${rvo.reply.userId},${post.id});|" class="text-primary">-->
+                            <!--<b th:text="${rvo.likeStatus==1?'已赞':'赞'}">赞</b>(<i th:text="${rvo.likeCount}">1</i>)-->
+                            <!--</a>-->
+                            <!--</li>-->
+                            <li class="d-inline ml-2">|</li>
+                            <li class="d-inline ml-2"><a th:href="|#huifu-${rvoStat.count}|" data-toggle="collapse" class="text-primary">回复</a></li>
+                        </ul>
+                        <div th:id="|huifu-${rvoStat.count}|" class="mt-4 collapse">
+                            <form method="post" onsubmit="return check_2()" th:action="@{|/comment/add/${post.id}|}">
+                                <div>
+                                    <input type="text" id="content_2" required="required" class="input-size" name="content" th:placeholder="|回复${rvo.user.username}|"/>
+                                    <input type="hidden" name="entityType" value="2">
+                                    <input type="hidden" name="entityId" th:value="${cvo.comment.id}">
+                                    <input type="hidden" name="targetId" th:value="${rvo.user.id}">
+                                </div>
+                                <div class="text-right mt-2">
+                                    <button type="submit" class="btn btn-primary btn-sm" onclick="#">&nbsp;&nbsp;回&nbsp;&nbsp;复&nbsp;&nbsp;</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </li>
+
+                <!-- 回复输入框 -->
+                <li class="pb-3 pt-3">
+                    <form method="post" onsubmit="return check_1()" th:action="@{|/comment/add/${post.id}|}">
+                        <div>
+                            <input type="text" id="content_1" required="required" class="input-size" name="content" placeholder="请输入你的观点"/>
+                            <input type="hidden" name="entityType" value="2">
+                            <input type="hidden" name="entityId" th:value="${cvo.comment.id}">
+                        </div>
+                        <div class="text-right mt-2">
+                            <button type="submit" class="btn btn-primary btn-sm" onclick="#">&nbsp;&nbsp;回&nbsp;&nbsp;复&nbsp;&nbsp;</button>
+                        </div>
+                    </form>
+                </li>
+
+
+                <!--&lt;!&ndash;回复列表的分页&ndash;&gt;-->
+                <!--<nav class="mt-5" th:if="${page.rows>0}" th:fragment="pagination">-->
+                <!--<ul class="pagination justify-content-center">-->
+                <!--<li class="page-item">-->
+                <!--<a class="page-link" th:href="@{${page.path}(current=1)}">首页</a>-->
+                <!--</li>-->
+                <!--<li th:class="|page-item ${page.current==1?'disabled':''}|">-->
+                <!--<a class="page-link" th:href="@{${page.path}(current=${page.current-1})}">上一页</a></li>-->
+                <!--<li th:class="|page-item ${i==page.current?'active':''}|" th:each="i:${#numbers.sequence(page.from,page.to)}">-->
+                <!--<a class="page-link" th:href="@{${page.path}(current=${i})}" th:text="${i}">1</a>-->
+                <!--</li>-->
+                <!--<li th:class="|page-item ${page.current==page.total?'disabled':''}|">-->
+                <!--<a class="page-link" th:href="@{${page.path}(current=${page.current+1})}">下一页</a>-->
+                <!--</li>-->
+                <!--<li class="page-item">-->
+                <!--<a class="page-link" th:href="@{${page.path}(current=${page.total})}">末页</a>-->
+                <!--</li>-->
+                <!--</ul>-->
+                <!--</nav>-->
+
+
+
+
+            </ul>
+        </div>
+    </li>
+</ul>
+
+<nav class="mt-5" th:if="${page.rows>0}" th:fragment="pagination">
+    <ul class="pagination justify-content-center">
+        <li class="page-item">
+            <a class="page-link" th:href="@{${page.path}(current=1)}">首页</a>
+        </li>
+        <li th:class="|page-item ${page.current==1?'disabled':''}|">
+            <a class="page-link" th:href="@{${page.path}(current=${page.current-1})}">上一页</a></li>
+        <li th:class="|page-item ${i==page.current?'active':''}|" th:each="i:${#numbers.sequence(page.from,page.to)}">
+            <a class="page-link" th:href="@{${page.path}(current=${i})}" th:text="${i}">1</a>
+        </li>
+        <li th:class="|page-item ${page.current==page.total?'disabled':''}|">
+            <a class="page-link" th:href="@{${page.path}(current=${page.current+1})}">下一页</a>
+        </li>
+        <li class="page-item">
+            <a class="page-link" th:href="@{${page.path}(current=${page.total})}">末页</a>
+        </li>
+    </ul>
+</nav>
+
+
+</body>
 <script src="https://code.jquery.com/jquery-3.3.1.min.js" crossorigin="anonymous"></script>
 <script type="text/javascript">
 
-    function check(){
-        // var uid = $("#uid").val();
-        var uid = $("*[name='uid']").val();
-        if (uid.trim().length == 0) {
-
-            alert("内容不能为空");
-            return false;
-        }
-        alert(uid);
-        return true;
-
-
-    }
 
 </script>
 
-</body>
 </html>

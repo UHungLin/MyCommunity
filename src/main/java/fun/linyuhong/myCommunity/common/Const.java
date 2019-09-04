@@ -3,6 +3,45 @@ package fun.linyuhong.myCommunity.common;
 public class Const {
 
     /**
+     * 点赞实体类型
+     */
+    public interface  like {
+        /**
+         * 帖子
+         */
+        int ENTITY_TYPE_POST = 1;
+        /**
+         * 评论
+         */
+        int ENTITY_TYPE_COMMENT = 2;
+
+        /**
+         * 实体类型: 用户
+         */
+        int ENTITY_TYPE_USER = 3;
+    }
+
+    /**
+     * Message 类型
+     */
+    public interface status {
+        /**
+         * 信息未读
+         */
+        int UNREAD = 0;
+
+        /**
+         * 信息已读
+         */
+        int READ = 1;
+
+        /**
+         * 信息删除
+         */
+        int DELETE = 2;
+    }
+
+    /**
      * Comment 类型
      */
     public interface entityType {

@@ -6,6 +6,7 @@ import fun.linyuhong.myCommunity.common.Page;
 import fun.linyuhong.myCommunity.entity.DiscussPost;
 import fun.linyuhong.myCommunity.entity.User;
 import fun.linyuhong.myCommunity.service.IDiscussPostService;
+import fun.linyuhong.myCommunity.service.ILikeService;
 import fun.linyuhong.myCommunity.service.Impl.DiscussPostServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpRequest;
@@ -33,7 +34,6 @@ public class HomeController {
         // 参数传入的时候由SpringMVC初始化
         // 方法调用前,SpringMVC会自动实例化Model和Page,并将Page注入Model.
         // 所以,在thymeleaf中可以直接访问Page对象中的数据.
-
         // 查询总页数
         page.setRows(discussPostService.findDiscussPostRows(0));
         page.setPath("/index?orderMode=" + orderMode);

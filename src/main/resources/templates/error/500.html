@@ -1,0 +1,29 @@
+﻿<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>500 Error Page Challenge</title>
+
+
+    <link rel="stylesheet" th:href="@{/css/style_500.css}">
+
+</head>
+<body>
+    <div class="full-screen">
+        <div class='container'>
+            <span class="error-num">5</span>
+            <div class='eye'></div>
+            <div class='eye'></div>
+            <p class="sub-text">Emmmmm...  抱歉 发生了某种不可以预料的情况 (ノ=Д=)ノ┻━┻ <span class="italic"></span> </p>
+            <a href="/">Go back</a>
+        </div>
+    </div>
+    <script th:src="@{/js/jquery.min.js}"></script>
+
+    <script th:src="@{/js/index.js}"></script>
+    <!--这行代码可以去掉-->
+    <!--<a href="http://www.bootstrapmb.com" style="display:none">bootstrapmb</a>-->
+
+
+</body>
+</html>

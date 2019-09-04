@@ -7,7 +7,7 @@
     <link rel="icon" th:href="@{/img/icon.png}"/>
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" crossorigin="anonymous">
 	<link rel="stylesheet" th:href="@{/css/global.css}" />
-	<title>首页</title>
+	<title>溢出网-首页</title>
 </head>
 <body>
 <div class="nk-container">
@@ -89,9 +89,9 @@
 						<div class="text-muted font-size-12">
 							<u class="mr-3" th:utext="${map.user.username}">寒江雪</u> 发布于 <b th:text="${#dates.format(map.post.createTime,'yyyy-MM-dd HH:mm:ss')}">2019-04-15 15:32:18</b>
 							<ul class="d-inline float-right">
-								<li class="d-inline ml-2">赞 11</li>
+								<li class="d-inline ml-2">赞 <span th:text="${map.likeCount}">11</span></li>
 								<li class="d-inline ml-2">|</li>
-								<li class="d-inline ml-2">回帖 7</li>
+								<li class="d-inline ml-2">回帖 <span th:text="${map.post.commentCount}">7</span></li>
 							</ul>
 						</div>
 					</div>

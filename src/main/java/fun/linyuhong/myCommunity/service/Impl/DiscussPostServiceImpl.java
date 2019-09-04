@@ -7,6 +7,7 @@ import fun.linyuhong.myCommunity.dao.UserMapper;
 import fun.linyuhong.myCommunity.entity.DiscussPost;
 import fun.linyuhong.myCommunity.entity.User;
 import fun.linyuhong.myCommunity.service.IDiscussPostService;
+import fun.linyuhong.myCommunity.service.ILikeService;
 import fun.linyuhong.myCommunity.util.SensitiveFilter;
 import fun.linyuhong.myCommunity.util.XORUtil;
 import fun.linyuhong.myCommunity.vo.UserVo;
@@ -32,6 +33,9 @@ public class DiscussPostServiceImpl implements IDiscussPostService {
     @Autowired
     private SensitiveFilter sensitiveFilter;
 
+    @Autowired
+    private ILikeService iLikeService;
+
     @Override
     public List<Map<String, Object>> selectDiscussPosts(int userId, int orderMode, int offset, int limit) {
 
@@ -43,6 +47,8 @@ public class DiscussPostServiceImpl implements IDiscussPostService {
             // 注意先获取 userId，因为 post 那里就要加密了
             UserVo userVo = assembleUserVo(userMapper.selectByPrimaryKey(post.getUserId()));
             map.put("user", userVo);
+            long likeCount = iLikeService.findEntityLikeCount(Const.like.ENTITY_TYPE_POST, post.getId());
+            map.put("likeCount", likeCount);
             post.setId(XORUtil.encryptId(post.getId(), Const.getIdEncodeKeys.postIdKeys));
             post.setUserId(XORUtil.encryptId(post.getUserId(), Const.getIdEncodeKeys.userIdKeys));
             map.put("post", post);
