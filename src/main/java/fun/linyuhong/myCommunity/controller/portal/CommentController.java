@@ -1,8 +1,13 @@
 package fun.linyuhong.myCommunity.controller.portal;
 
+import fun.linyuhong.myCommunity.async.EventModel;
+import fun.linyuhong.myCommunity.async.EventProducer;
+import fun.linyuhong.myCommunity.async.EventType;
 import fun.linyuhong.myCommunity.common.Const;
 import fun.linyuhong.myCommunity.entity.Comment;
+import fun.linyuhong.myCommunity.entity.DiscussPost;
 import fun.linyuhong.myCommunity.service.ICommentService;
+import fun.linyuhong.myCommunity.service.IDiscussPostService;
 import fun.linyuhong.myCommunity.util.HostHolder;
 import fun.linyuhong.myCommunity.util.XORUtil;
 import org.apache.commons.lang3.StringUtils;
@@ -25,6 +30,13 @@ public class CommentController {
     @Autowired
     private ICommentService iCommentService;
 
+    @Autowired
+    private EventProducer eventProducer;
+
+    @Autowired
+    private IDiscussPostService iDiscussPostService;
+
+
     @RequestMapping(path = "/add/{discussPostId}", method = RequestMethod.POST)
     public String addComment(@PathVariable("discussPostId") Integer discussPostId, Comment comment) {
 
@@ -45,6 +57,23 @@ public class CommentController {
         }
 
         iCommentService.addComment(comment);
+
+        /**
+         * 触发评论事件
+         */
+        EventModel eventModel = new EventModel(EventType.COMMENT)
+                .setActorId(XORUtil.encryptId(hostHolder.getUser().getId(), Const.getIdEncodeKeys.userIdKeys))
+                .setEntityType(entityType)
+                .setEntityId(comment.getEntityId())
+                .setData("postId", XORUtil.encryptId(discussPostId, Const.getIdEncodeKeys.postIdKeys));  // postId 为帖子Id，点击查看详情时用到 对于点赞对象为 comment 时有用
+        if (comment.getEntityType() == Const.entityType.ENTITY_TYPE_POST) {
+            DiscussPost target = iDiscussPostService.findDiscussPostById(comment.getEntityId());
+            eventModel.setEntityUserId(target.getUserId());
+        } else if (comment.getEntityType() == Const.entityType.ENTITY_TYPE_COMMENT) {
+            Comment target = iCommentService.findCommentById(comment.getEntityId());
+            eventModel.setEntityUserId(target.getUserId());
+        }
+        eventProducer.fireEvent(eventModel);
 
         return "redirect:/discuss/detail/" + discussPostId;
     }

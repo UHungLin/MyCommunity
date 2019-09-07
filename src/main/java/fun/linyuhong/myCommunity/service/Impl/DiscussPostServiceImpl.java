@@ -92,7 +92,14 @@ public class DiscussPostServiceImpl implements IDiscussPostService {
         DiscussPost discussPost = discussPostMapper.selectDiscussPostById(XORUtil.encryptId(discussPostId, Const.getIdEncodeKeys.postIdKeys));
         // 帖子 id 加密
         discussPost.setId(XORUtil.encryptId(discussPost.getId(), Const.getIdEncodeKeys.postIdKeys));
+        // 帖子作者加密
+        discussPost.setUserId(XORUtil.encryptId(discussPost.getUserId(), Const.getIdEncodeKeys.userIdKeys));
         return discussPost;
+    }
+
+    @Override
+    public DiscussPost findDiscussPostById(int id) {
+        return discussPostMapper.selectDiscussPostById(id);
     }
 }
 

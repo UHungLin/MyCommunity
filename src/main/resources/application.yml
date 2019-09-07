@@ -29,7 +29,7 @@ spring:
     host: smtp.qq.com
     port: 465
     username: 2105367070@qq.com
-    password: iuatknwcuovoifhj
+    password: dsntzeslgaojcfcg
     protocol: smtps
     properties.mail.smtp.ssl.enable: true
 
@@ -38,7 +38,20 @@ spring:
     database: 2
     host: 127.0.0.1
     port: 6379
-
+    timeout: 300000   # 记得改掉
+#    commandTimeout: 0
+#    jedis:
+#      pool:
+#        max-idle: 10
+#        min-idle: 0
+#        max-active: 10
+#        max-wait: -1
+    lettuce:
+      pool:
+        max-wait: -1  # 连接池最大阻塞等待时间
+        max-idle: 10
+        min-idle: 0
+        max-active: 10
 
 mybatis:
   mapper-locations:

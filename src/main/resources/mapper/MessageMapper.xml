@@ -221,4 +221,45 @@
     values(#{fromId},#{toId},#{conversationId},#{content},#{status},#{createTime})
   </insert>
 
+  <select id="selectLatestNotice" resultType="Message">
+    select <include refid="selectFields"></include>
+    from message
+    where id in (
+    select max(id) from message
+    where status != 2
+    and from_id = 1
+    and to_id = #{userId}
+    and conversation_id = #{topic}
+    )
+  </select>
+
+  <select id="selectNoticeCount" resultType="int">
+        select count(id) from message
+        where status != 2
+        and from_id = 1
+        and to_id = #{userId}
+        and conversation_id = #{topic}
+    </select>
+
+  <select id="selectNoticeUnreadCount" resultType="int">
+    select count(id) from message
+    where status = 0
+    and from_id = 1
+    and to_id = #{userId}
+    <if test="topic!=null">
+      and conversation_id = #{topic}
+    </if>
+  </select>
+
+  <select id="selectNotices" resultType="Message">
+    select <include refid="selectFields"></include>
+    from message
+    where status != 2
+    and from_id = 1
+    and to_id = #{userId}
+    and conversation_id = #{topic}
+    order by create_time desc
+    limit #{offset}, #{limit}
+  </select>
+
 </mapper>

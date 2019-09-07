@@ -13,6 +13,10 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 
+
+/**
+ * 全局统一异常配置类
+ */
 @ControllerAdvice(annotations = Controller.class)
 public class ExceptionAdvice {
 

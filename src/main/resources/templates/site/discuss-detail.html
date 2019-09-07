@@ -36,7 +36,7 @@
                 </h6>
                 <!-- 作者 -->
                 <div class="media pb-3 border-bottom">
-                    <a href="profile.html">
+                    <a th:href="@{|/user/profile/${user.id}|}">
                         <img th:src="${user.headerUrl}" class="align-self-start mr-4 rounded-circle user-header" alt="用户头像" >
                     </a>
                     <div class="media-body">
@@ -57,12 +57,7 @@
                 </div>
                 <!-- 正文 -->
                 <div class="mt-4 mb-3 content" th:utext="${post.content}">
-                    金三银四的金三已经到了，你还沉浸在过年的喜悦中吗？
-                    如果是，那我要让你清醒一下了：目前大部分公司已经开启了内推，正式网申也将在3月份陆续开始，金三银四，春招的求职黄金时期已经来啦！！！
-                    再不准备，作为19应届生的你可能就找不到工作了。。。作为20届实习生的你可能就找不到实习了。。。
-                    现阶段时间紧，任务重，能做到短时间内快速提升的也就只有算法了，
-                    那么算法要怎么复习？重点在哪里？常见笔试面试算法题型和解题思路以及最优代码是怎样的？
-                    跟左程云老师学算法，不仅能解决以上所有问题，还能在短时间内得到最大程度的提升！！！
+
                 </div>
             </div>
             <!-- 回帖 -->
@@ -79,7 +74,7 @@
                 <!-- 回帖列表 -->
                 <ul class="list-unstyled mt-4">
                     <li class="media pb-3 pt-3 mb-3 border-bottom" th:each="cvo:${comments}">
-                        <a href="profile.html">
+                        <a th:href="@{|/user/profile/${cvo.user.id}|}">
                             <img th:src="${cvo.user.headerUrl}" class="align-self-start mr-4 rounded-circle user-header" alt="用户头像" >
                         </a>
                         <div class="media-body">
@@ -90,7 +85,7 @@
 								</span>
                             </div>
                             <div class="mt-2" th:utext="${cvo.comment.content}">
-                                这开课时间是不是有点晚啊。。。
+
                             </div>
                             <div class="mt-4 text-muted font-size-12">
                                 <span>发布于 <b th:text="${#dates.format(cvo.comment.createTime,'yyyy-MM-dd HH:mm:ss')}">2019-04-15 15:32:18</b></span>
@@ -110,11 +105,11 @@
                                 <li class="pb-3 pt-3 mb-3 border-bottom" th:each="rvo:${cvo.replys}">
                                     <div>
 										<span th:if="${rvo.target==null}">
-											<b class="text-info" th:text="${rvo.user.username}">寒江雪</b>:&nbsp;&nbsp;
+                                            <a th:href="@{|/user/profile/${rvo.user.id}|}"><b class="text-info" th:text="${rvo.user.username}">寒江雪</b></a>:&nbsp;&nbsp;
 										</span>
                                         <span th:if="${rvo.target!=null}">
-											<i class="text-info" th:text="${rvo.user.username}">Sissi</i> 回复
-											<b class="text-info" th:text="${rvo.target.username}">寒江雪</b>:&nbsp;&nbsp;
+											<a th:href="@{|/user/profile/${rvo.user.id}|}"><i class="text-info" th:text="${rvo.user.username}">Sissi</i></a>  回复
+											<a th:href="@{|/user/profile/${rvo.target.id}|}"><b class="text-info" th:text="${rvo.target.username}">寒江雪</b></a>:&nbsp;&nbsp;
 										</span>
                                         <span th:utext="${rvo.reply.content}">这个是直播时间哈，觉得晚的话可以直接看之前的完整录播的~</span>
                                     </div>

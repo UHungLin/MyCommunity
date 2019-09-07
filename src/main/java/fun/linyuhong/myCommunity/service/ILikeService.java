@@ -12,4 +12,6 @@ public interface ILikeService {
 
     int findEntityLikeStatus(int userId, int entityType, int entityId);
 
+    int findUserLikeCount(int userId);
+
 }

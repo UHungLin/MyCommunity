@@ -1,5 +1,6 @@
 package fun.linyuhong.myCommunity.service.Impl;
 
+import fun.linyuhong.myCommunity.common.Const;
 import fun.linyuhong.myCommunity.service.ILikeService;
 import fun.linyuhong.myCommunity.util.RedisKeyUtil;
 import org.aspectj.lang.annotation.Aspect;
@@ -48,16 +49,27 @@ public class LikeServiceImpl implements ILikeService {
 
     }
 
+    // 查询某实体点赞的数量
     @Override
     public Long findEntityLikeCount(int entityType, int entityId) {
         String entityLikeKey = RedisKeyUtil.getEntityLikeKey(entityType, entityId);
         return redisTemplate.opsForSet().size(entityLikeKey);
     }
 
+    // 查询某人对某实体的点赞状态
+    // 返回 int 而不是 boolean 是为了以后有机会做扩展，boolean只能表示两种状态，例如已赞或未赞，如果要添加 踩 的功能则不能
     @Override
     public int findEntityLikeStatus(int userId, int entityType, int entityId) {
         String entityLikeKey = RedisKeyUtil.getEntityLikeKey(entityType, entityId);
         return redisTemplate.opsForSet().isMember(entityLikeKey, userId) ? 1 : 0;
+    }
+
+    // 查询某个用户获得的赞
+    @Override
+    public int findUserLikeCount(int userId) {
+        String userLikeKey = RedisKeyUtil.getUserLikeKey(userId);
+        Integer count = (Integer) redisTemplate.opsForValue().get(userLikeKey);
+        return count == null ? 0 : count.intValue();
     }
 }
 

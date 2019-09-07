@@ -1,5 +1,7 @@
 package fun.linyuhong.myCommunity.controller.portal;
 
+import com.alibaba.fastjson.JSONObject;
+import fun.linyuhong.myCommunity.async.EventType;
 import fun.linyuhong.myCommunity.common.Const;
 import fun.linyuhong.myCommunity.common.Page;
 import fun.linyuhong.myCommunity.entity.Message;
@@ -80,6 +82,13 @@ public class MessageController {
         // 私信总未读数量
         int letterUnreadCount = iMessageService.findLetterUnreadCount(userId, null);
         model.addAttribute("letterUnreadCount", letterUnreadCount);
+        // 系统通知未读数量
+        int noticeUnreadCount = iMessageService.findNoticeUnreadCount(userId, null);
+        model.addAttribute("noticeUnreadCount", noticeUnreadCount);
+
+        // 总的未读数量
+        int allUnreadCount = letterUnreadCount + noticeUnreadCount;
+        model.addAttribute("allUnreadCount", allUnreadCount);
 
         return "/site/letter";
     }
@@ -118,9 +127,23 @@ public class MessageController {
             iMessageService.readMessage(ids);
         }
 
+        // 查询未读消息数量
+        // 未读会话数量
+        UserVo user = hostHolder.getUser();
+        int userId = XORUtil.encryptId(user.getId(), Const.getIdEncodeKeys.userIdKeys);
+        int letterUnreadCount = iMessageService.findLetterUnreadCount(userId, null);
+        model.addAttribute("letterUnreadCount", letterUnreadCount);
+        // 未读系统通知数量
+        int noticeUnreadCount = iMessageService.findNoticeUnreadCount(userId, null);
+        model.addAttribute("noticeUnreadCount", noticeUnreadCount);
+        // 总的未读数量
+        int allUnreadCount = letterUnreadCount + noticeUnreadCount;
+        model.addAttribute("allUnreadCount", allUnreadCount);
+
         return "/site/letter-detail";
     }
 
+    // 拿到会话的对方
     private UserVo getLetterTarget(String conversationId) {
         UserVo user = hostHolder.getUser();
         // 解密
@@ -137,6 +160,7 @@ public class MessageController {
         }
     }
 
+    // 拿到所有未读私信的id
     private List<Integer> getLetterIds(List<Message> letterList) {
         List<Integer> ids = new ArrayList<>();
         if (letterList != null){
@@ -185,6 +209,174 @@ public class MessageController {
     }
 
 
+    @RequestMapping(path = "/notice/list", method = RequestMethod.GET)
+    public String getNoticeList(Model model) {
+
+        UserVo user = hostHolder.getUser();
+        // 解密
+        int userId = XORUtil.encryptId(user.getId(), Const.getIdEncodeKeys.userIdKeys);
+
+        // 查询最新 的评论通知
+        Message message = iMessageService.findLatestNotice(userId, EventType.COMMENT.getValue());
+        Map<String, Object> messageVo = new HashMap<>();
+
+        messageVo.put("message", null);
+
+        messageVo = assembleMessageVo(message, messageVo, EventType.COMMENT, userId);
+        model.addAttribute("commentNotice", messageVo);
+
+
+        // 查询点赞类通知
+        message = iMessageService.findLatestNotice(userId, EventType.LIKE.getValue());
+        messageVo = new HashMap<>();
+
+        messageVo.put("message",null);
+
+        messageVo = assembleMessageVo(message, messageVo, EventType.LIKE, userId);
+        model.addAttribute("likeNotice", messageVo);
+
+
+        // 查询关注类通知
+        message = iMessageService.findLatestNotice(userId, EventType.FOLLOW.getValue());
+        messageVo = new HashMap<>();
+
+        messageVo.put("message",null);
+
+        messageVo = assembleMessageVo(message, messageVo, EventType.FOLLOW, userId);
+        model.addAttribute("followNotice", messageVo);
+
+
+        // 查询系统通知
+        message = iMessageService.findLatestNotice(userId, EventType.SYSTEM.getValue());
+        messageVo = new HashMap<>();
+
+        messageVo.put("message",null);
+
+        messageVo = assembleMessageVo(message, messageVo, EventType.SYSTEM, userId);
+        model.addAttribute("systemNotice", messageVo);
+
+
+        // 查询未读消息数量
+        // 未读会话总的数量
+        int letterUnreadCount = iMessageService.findLetterUnreadCount(userId, null);
+        model.addAttribute("letterUnreadCount", letterUnreadCount);
+        // 未读系统总的通知数量(包括点赞、评论、关注、注册等通知)
+        int noticeUnreadCount = iMessageService.findNoticeUnreadCount(userId, null);
+        model.addAttribute("noticeUnreadCount", noticeUnreadCount);
+
+        int allUnreadCount = letterUnreadCount + noticeUnreadCount;
+        model.addAttribute("allUnreadCount", allUnreadCount);
+
+        return "/site/notice";
+
+    }
+
+    private Map<String, Object> assembleMessageVo(Message message, Map<String, Object> messageVo, EventType type, int userId) {
+
+        if (message != null) {
+            // 用户id 加密
+            message.setToId(XORUtil.encryptId(message.getToId(), Const.getIdEncodeKeys.userIdKeys));
+            messageVo.put("message", message);
+
+            String content = HtmlUtils.htmlUnescape(message.getContent());
+            Map<String, Object> data = JSONObject.parseObject(content, HashMap.class);
+
+            // 事件触发者 actor
+            messageVo.put("user", iUserService.findUserById((Integer) data.get("userId")));
+            messageVo.put("entityType", data.get("entityType"));
+            // 如果是帖子id，则加密  评论id不用
+            int entityId = data.get("entityType").equals(Const.entityType.ENTITY_TYPE_POST) ?
+            XORUtil.encryptId((Integer) data.get("entityId"), Const.getIdEncodeKeys.postIdKeys) : (Integer) data.get("entityId");
+            messageVo.put("entityId", entityId);
+
+            /**
+             * 注意：关注、注册事件没有 postId
+             */
+            if (data.get("postId") != null) {
+                // 帖子id加密
+                messageVo.put("postId", XORUtil.encryptId((Integer) data.get("postId"), Const.getIdEncodeKeys.postIdKeys));
+            }
+
+            /**
+             * 取出注册时写的msg
+             */
+            if (data.get("msg") != null) {
+                messageVo.put("msg", data.get("msg"));
+            }
+
+            int count = iMessageService.findNoticeCount(userId, type.getValue());
+            messageVo.put("count", count);
+
+            int unread = iMessageService.findNoticeUnreadCount(userId, type.getValue());
+            messageVo.put("unread", unread);
+        }
+
+        return messageVo;
+    }
+
+
+    @RequestMapping(path = "/notice/detail/{topic}", method = RequestMethod.GET)
+    public String getNoticeDetail(@PathVariable("topic") String topic, Page page, Model model) {
+        UserVo user = hostHolder.getUser();
+        // 解密
+        int userId = XORUtil.encryptId(user.getId(), Const.getIdEncodeKeys.userIdKeys);
+
+        page.setLimit(5);
+        page.setPath("/notice/detail/" + topic);
+        page.setRows(iMessageService.findNoticeCount(userId, topic));
+
+
+        List<Message> noticeList = iMessageService.findNotices(userId, topic, page.getOffset(), page.getLimit());
+        List<Map<String, Object>> noticeVoList = new ArrayList<>();
+        if (noticeList != null) {
+            for (Message notice : noticeList) {
+                Map<String, Object> map = new HashMap<>();
+                // 通知
+                map.put("notice", notice);
+                // 内容
+                String content = HtmlUtils.htmlUnescape(notice.getContent());
+                Map<String, Object> data = JSONObject.parseObject(content, HashMap.class);
+                // 事件触发者 actor
+                map.put("user", iUserService.findUserById((Integer) data.get("userId")));
+                map.put("entityType", data.get("entityType"));
+                // 如果是帖子id，则加密  评论id不用
+                int entityId = data.get("entityType").equals(Const.entityType.ENTITY_TYPE_POST) ?
+                        XORUtil.encryptId((Integer) data.get("entityId"), Const.getIdEncodeKeys.postIdKeys) : (Integer) data.get("entityId");
+                map.put("entityId", entityId);
+                /**
+                 * 注意：关注、注册等系统事件没有 postId
+                 */
+                if (!topic.equals(EventType.FOLLOW.getValue()) && !topic.equals(EventType.SYSTEM.getValue())) {
+                    // 帖子id加密
+                    map.put("postId", XORUtil.encryptId((Integer) data.get("postId"), Const.getIdEncodeKeys.postIdKeys));
+                }
+
+                /**
+                 * 类似注册事件还有 msg
+                 */
+                if (data.get("msg") != null) {
+                    map.put("msg", data.get("msg"));
+                }
+                // 通知作者
+                map.put("fromUser", iUserService.findUserById(notice.getFromId()));
+
+                noticeVoList.add(map);
+            }
+        }
+        model.addAttribute("notices", noticeVoList);
+
+        // 先加密  再传进 getLetterIds 中
+        for (Message message : noticeList) {
+            message.setToId(XORUtil.encryptId(message.getToId(), Const.getIdEncodeKeys.userIdKeys));
+        }
+        // 设置已读
+        List<Integer> ids = getLetterIds(noticeList);
+        if (!ids.isEmpty()) {
+            iMessageService.readMessage(ids);
+        }
+
+        return "/site/notice-detail";
+    }
 
 }
 

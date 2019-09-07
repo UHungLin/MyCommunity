@@ -34,7 +34,7 @@ function send_letter() {
 function delete_msg() {
 	// TODO 删除数据
 	// $(this).parents(".media").remove();
-	alert("暂不支持删除私信记录");
+	alert("暂不支持删除操作");
 }
 
 function back() {

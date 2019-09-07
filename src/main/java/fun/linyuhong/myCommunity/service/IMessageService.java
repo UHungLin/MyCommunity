@@ -24,4 +24,12 @@ public interface IMessageService {
 
     int addMessage(Message message);
 
+    Message findLatestNotice(int userId, String topic);
+
+    int findNoticeCount(int userId, String topic);
+
+    int findNoticeUnreadCount(int userId, String topic);
+
+    List<Message> findNotices(int userId, String topic, int offset, int limit);
+
 }

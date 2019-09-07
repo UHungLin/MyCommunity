@@ -17,4 +17,6 @@ public interface IDiscussPostService {
 
     DiscussPost getDiscussPost(Integer discussPostId);
 
+    DiscussPost findDiscussPostById(int id);
+
 }

@@ -3,6 +3,23 @@ package fun.linyuhong.myCommunity.common;
 public class Const {
 
     /**
+     * 系统用户
+     */
+    public interface systemuser {
+        int SYSTEM_USER_ID = 1;
+    }
+
+    /**
+     * 关注实体类型
+     */
+    public interface follow {
+        /**
+         * 实体类型: 用户
+         */
+        int ENTITY_TYPE_USER = 3;
+    }
+
+    /**
      * 点赞实体类型
      */
     public interface  like {
@@ -14,11 +31,11 @@ public class Const {
          * 评论
          */
         int ENTITY_TYPE_COMMENT = 2;
-
         /**
          * 实体类型: 用户
          */
         int ENTITY_TYPE_USER = 3;
+
     }
 
     /**
@@ -59,6 +76,8 @@ public class Const {
          * 实体类型: 用户
          */
         int ENTITY_TYPE_USER = 3;
+
+
     }
 
     /**

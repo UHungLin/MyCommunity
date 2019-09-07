@@ -74,7 +74,7 @@
 				<!-- 私信列表 -->
 				<ul class="list-unstyled mt-4" th:each="map:${letters}">
 					<li class="media pb-3 pt-3 mb-2">
-						<a href="profile.html">
+						<a th:href="@{|/user/profile/${map.fromUser.id}|}">
 							<img th:src="${map.fromUser.headerUrl}" class="mr-4 rounded-circle user-header" alt="用户头像" >
 						</a>
 						<div class="toast show d-lg-block" role="alert" aria-live="assertive" aria-atomic="true">

@@ -1,5 +1,8 @@
 package fun.linyuhong.myCommunity.service.Impl;
 
+import fun.linyuhong.myCommunity.async.EventModel;
+import fun.linyuhong.myCommunity.async.EventProducer;
+import fun.linyuhong.myCommunity.async.EventType;
 import fun.linyuhong.myCommunity.common.Const;
 import fun.linyuhong.myCommunity.dao.UserMapper;
 import fun.linyuhong.myCommunity.entity.LoginTicket;
@@ -19,6 +22,7 @@ import org.thymeleaf.context.Context;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author linyuhong
@@ -38,6 +42,9 @@ public class UserServiceImpl implements IUserService {
 
     @Autowired
     private MailClient mailClient;
+
+    @Autowired
+    private EventProducer eventProducer;
 
     // 域名
     @Value("${domain}")
@@ -108,12 +115,16 @@ public class UserServiceImpl implements IUserService {
 
     @Override
     public UserVo findUserById(int userId) {
-
-        User user = userMapper.selectByPrimaryKey(userId);
-        if (user != null) {
-            return assembleUser(user);
+//        User user = userMapper.selectByPrimaryKey(userId);
+//        if (user != null) {
+//            return assembleUser(user);
+//        }
+//        return null;
+        UserVo userVo = getCache(userId);
+        if (userVo == null) {
+            userVo = initCache(userId);
         }
-        return null;
+        return userVo;
     }
 
     private UserVo assembleUser(User user) {
@@ -132,7 +143,7 @@ public class UserServiceImpl implements IUserService {
     public void logout(String ticket) {
         String redisKey = RedisKeyUtil.getTicketKey(ticket);
         LoginTicket loginTicket = (LoginTicket) redisTemplate.opsForValue().get(redisKey);
-        loginTicket.setStatus(Const.loginStatus.INVALID);
+        loginTicket.setStatus(Const.loginStatus.INVALID);  // 不删除，保存用户的登录记录
         redisTemplate.opsForValue().set(redisKey, loginTicket);
     }
 
@@ -189,15 +200,26 @@ public class UserServiceImpl implements IUserService {
         user.setCreateTime(new Date());
         userMapper.insertUser(user);
 
-        // 发送激活邮件
-        Context context = new Context();
-        context.setVariable("email", user.getEmail());
-        // http://localhost:8080/activation/10110110/code
-        String url = domain + contextPath + "/activation/" + XORUtil.encryptId(user.getId(), Const.getIdEncodeKeys.userIdKeys)
-                + "/" + user.getActivationCode();
-        context.setVariable("url", url);
-        String content = templateEngine.process("/mail/activation", context);
-        mailClient.sendMail(user.getEmail(), "激活账号", content);
+//        // 发送激活邮件
+//        Context context = new Context();
+//        context.setVariable("email", user.getEmail());
+//        // http://localhost:8080/activation/10110110/code
+//        String url = domain + contextPath + "/activation/" + XORUtil.encryptId(user.getId(), Const.getIdEncodeKeys.userIdKeys)
+//                + "/" + user.getActivationCode();
+//        context.setVariable("url", url);
+//        String content = templateEngine.process("/mail/activation", context);
+//        mailClient.sendMail(user.getEmail(), "激活账号", content);
+
+        /**
+         * 触发注册事件
+         */
+        EventModel eventModel = new EventModel(EventType.REGISTER)
+                .setActorId(Const.systemuser.SYSTEM_USER_ID)
+                .setEntityUserId(user.getId())
+                .setEntityType(Const.entityType.ENTITY_TYPE_USER)
+                .setEntityUserId(user.getId())
+                .setData("msg", "欢迎您注册溢出网");
+        eventProducer.fireEvent(eventModel);
 
         return map;
     }
@@ -213,7 +235,8 @@ public class UserServiceImpl implements IUserService {
             return Const.active.ACTIVATION_REPEAT;
         }else if (user.getActivationCode().equals(code)){
             userMapper.updateStatus(userId, Const.active.ACTIVE);
-//            clearCache(userId);
+            clearCache(userId);
+
             return Const.active.ACTIVATION_SUCCESS;
         }else {
             return Const.active.ACTIVATION_FAILURE;
@@ -227,6 +250,28 @@ public class UserServiceImpl implements IUserService {
             return null;
         }
        return assembleUser(user);
+    }
+
+
+    // 1.优先从缓存中取值
+    private UserVo getCache(int userId) {
+        String redisKey = RedisKeyUtil.getUserKey(userId);
+        return (UserVo) redisTemplate.opsForValue().get(redisKey);
+    }
+
+    // 2.取不到时初始化缓存数据
+    private UserVo initCache(int userId) {
+        User user = userMapper.selectByPrimaryKey(userId);
+        UserVo userVo = assembleUser(user);
+        String redisKey = RedisKeyUtil.getUserKey(userId);
+        redisTemplate.opsForValue().set(redisKey, userVo, 3600, TimeUnit.SECONDS);
+        return userVo;
+    }
+
+    // 3.数据变更时清除缓存数据
+    private void clearCache(int userId) {
+        String redisKey = RedisKeyUtil.getUserKey(userId);
+        redisTemplate.delete(redisKey);
     }
 
 

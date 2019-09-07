@@ -73,16 +73,18 @@ public class DiscussPostController {
         DiscussPost discussPost = iDiscussPostService.getDiscussPost(discussPostId);
         model.addAttribute("post", discussPost);
         // 获取帖子作者
-        UserVo user = iUserService.findUserById(discussPost.getUserId());
+        UserVo user = iUserService.findUserById(XORUtil.encryptId(discussPost.getUserId(), Const.getIdEncodeKeys.userIdKeys));
         model.addAttribute("user", user);
         // 获取点赞数量
         // 解密帖子id
         int postId = XORUtil.encryptId(discussPost.getId(), Const.getIdEncodeKeys.postIdKeys);
         Long likeCount = iLikeService.findEntityLikeCount(Const.like.ENTITY_TYPE_POST, postId);
         model.addAttribute("likeCount", likeCount);
+
         // 当前登录用户对这个帖子的点赞状态
-        int likeStatus = hostHolder.getUser() == null ? 0 : iLikeService.findEntityLikeStatus(
-                XORUtil.encryptId(hostHolder.getUser().getId(), Const.getIdEncodeKeys.userIdKeys), Const.like.ENTITY_TYPE_POST, postId);
+        // 解密
+        int userId = XORUtil.encryptId(hostHolder.getUser().getId(), Const.getIdEncodeKeys.userIdKeys);
+        int likeStatus = hostHolder.getUser() == null ? 0 : iLikeService.findEntityLikeStatus(userId, Const.like.ENTITY_TYPE_POST, postId);
         model.addAttribute("likeStatus", likeStatus);
         // 设置分页
         page.setPath("/discuss/detail/" + discussPostId);
@@ -110,8 +112,7 @@ public class DiscussPostController {
                 commentVo.put("likeCount", likeCount);
                 // 点赞状态  当前登录用户是否对这篇帖子点赞
                 likeStatus = hostHolder.getUser() == null ? 0 :
-                        iLikeService.findEntityLikeStatus(XORUtil.encryptId(hostHolder.getUser().getId(), Const.getIdEncodeKeys.userIdKeys),
-                                Const.like.ENTITY_TYPE_COMMENT, comment.getId());
+                        iLikeService.findEntityLikeStatus(userId, Const.like.ENTITY_TYPE_COMMENT, comment.getId());
                 commentVo.put("likeStatus", likeStatus);
 
 //                // 查找评论的评论 不分页
@@ -133,7 +134,7 @@ public class DiscussPostController {
                         replyVo.put("likeCount", likeCount);
                         // 点赞状态  是否登录？没登录不显示是否已赞
                         likeStatus = hostHolder.getUser() == null ? 0 :
-                                iLikeService.findEntityLikeStatus(hostHolder.getUser().getId(), Const.like.ENTITY_TYPE_COMMENT, reply.getId());
+                                iLikeService.findEntityLikeStatus(userId, Const.like.ENTITY_TYPE_COMMENT, reply.getId());
                         replyVo.put("likeStatus", likeStatus);
                         // 注意 replyVo.put("reply", reply) 放到最后操作，先查出需要的对象，在对id加密
                         reply.setUserId(XORUtil.encryptId(reply.getUserId(), Const.getIdEncodeKeys.userIdKeys));
