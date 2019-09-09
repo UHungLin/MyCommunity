@@ -21,8 +21,8 @@
                     </li>
 
                     <!-- 搜索 -->
-                    <form class="ml-5 form-inline my-2 my-lg-0" th:action="@{/search}">
-                        <input class="form-control mr-sm-2" type="search" aria-label="Search" th:value="${keyword}"/>
+                    <form class="ml-5 form-inline my-2 my-lg-0" method="get" th:action="@{/search}">
+                        <input class="form-control mr-sm-2" type="search" aria-label="Search" name="keyword" th:value="${keyword}"/>
                         <button class="btn btn-outline-primary my-2 my-sm-0" type="submit">搜索</button>
                     </form>
 
@@ -48,7 +48,7 @@
                             <img th:src="${loginUser.headerUrl}" class="rounded-circle" style="width:45px;"/>
                         </a>
                         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <a class="dropdown-item text-center" th:href="@{|/user/profile/${loginUser.id}|}">个人主页</a>
+                            <a class="dropdown-item text-center" th:href="@{|/user/profile/${loginUser.id}|}">我的主页</a>
                             <a class="dropdown-item text-center" th:href="@{/user/setting}">账号设置</a>
                             <a class="dropdown-item text-center" th:href="@{/logout}">退出登录</a>
                             <div class="dropdown-divider"></div>

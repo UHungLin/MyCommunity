@@ -182,6 +182,9 @@ public class Const {
         int ACTIVATION_FAILURE = 5;
     }
 
+    /**
+     * 用户随机头像生成地址
+     */
     public interface avatarUrl {
         String AVATARURL = "https://api.uomg.com/api/rand.avatar";
     }

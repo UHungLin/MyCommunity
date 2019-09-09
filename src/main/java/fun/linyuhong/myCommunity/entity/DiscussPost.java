@@ -1,27 +1,44 @@
 package fun.linyuhong.myCommunity.entity;
 
+
 import org.springframework.data.annotation.Id;
+import org.springframework.data.elasticsearch.annotations.Document;
+import org.springframework.data.elasticsearch.annotations.Field;
+import org.springframework.data.elasticsearch.annotations.FieldType;
 
 import java.util.Date;
 
+//                     索引名字        文档，起到占位作用   分片数量     副本数量
+@Document(indexName = "discusspost", type = "_doc", shards = 6, replicas = 2)
 public class DiscussPost {
 
+    @Id
     private int id;
 
+    @Field(type = FieldType.Integer)
     private int userId;
 
+    // 互联网校招(可以分为 "互联网" "校招"等关键词建立索引,通过该关键词就可以找到这句话)
+    //                            存储时候的分词器(分解为关键词的依据)    搜索时候的分词器(搜索时拆分关键词不用那么细)
+    @Field(type = FieldType.Text, analyzer = "ik_max_word", searchAnalyzer = "ik_smart")
     private String title;
 
+    @Field(type = FieldType.Text, analyzer = "ik_max_word", searchAnalyzer = "ik_smart")
     private String content;
 
+    @Field(type = FieldType.Integer)
     private int type;
 
+    @Field(type = FieldType.Integer)
     private int status;
 
+    @Field(type = FieldType.Date)
     private Date createTime;
 
+    @Field(type = FieldType.Integer)
     private int commentCount;
 
+    @Field(type = FieldType.Double)
     private double score;
 
     public int getId() {

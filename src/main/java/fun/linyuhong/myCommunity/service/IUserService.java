@@ -4,7 +4,9 @@ import fun.linyuhong.myCommunity.entity.LoginTicket;
 import fun.linyuhong.myCommunity.entity.Message;
 import fun.linyuhong.myCommunity.entity.User;
 import fun.linyuhong.myCommunity.vo.UserVo;
+import org.springframework.security.core.GrantedAuthority;
 
+import java.util.Collection;
 import java.util.Map;
 
 /**
@@ -26,6 +28,10 @@ public interface IUserService {
     int activation(int userId, String code);
 
     UserVo findUserByName(String username);
+
+    int updateHeader(int userId, String url);
+
+    Collection<? extends GrantedAuthority> getAuthorities(int userId);
 
 
 }

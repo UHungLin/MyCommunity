@@ -63,7 +63,7 @@
 					<!--评论类通知-->
 					<li class="media pb-3 pt-3 mb-3 border-bottom position-relative" th:if="${commentNotice.message!=null}">
 						<span class="badge badge-danger" th:text="${commentNotice.unread!=0?commentNotice.unread:''}">3</span>
-						<img th:src="@{/img/reply}" class="mr-4 user-header" alt="通知图标">
+						<img th:src="@{/img/reply.jpg}" class="mr-4 user-header" alt="通知图标">
 						<div class="media-body">
 							<h6 class="mt-0 mb-3">
 								<span>评论</span>
@@ -85,7 +85,7 @@
 					<!--点赞类通知-->
 					<li class="media pb-3 pt-3 mb-3 border-bottom position-relative" th:if="${likeNotice.message!=null}">
 						<span class="badge badge-danger" th:text="${likeNotice.unread!=0?likeNotice.unread:''}">3</span>
-						<img th:src="@{/img/like}" class="mr-4 user-header" alt="通知图标">
+						<img th:src="@{/img/like.jpg}" class="mr-4 user-header" alt="通知图标">
 						<div class="media-body">
 							<h6 class="mt-0 mb-3">
 								<span>赞</span>
@@ -107,7 +107,7 @@
 					<!--关注类通知-->
 					<li class="media pb-3 pt-3 mb-3 border-bottom position-relative" th:if="${followNotice.message!=null}">
 						<span class="badge badge-danger" th:text="${followNotice.unread!=0?followNotice.unread:''}">3</span>
-						<img th:src="@{/img/follow}" class="mr-4 user-header" alt="通知图标">
+						<img th:src="@{/img/follow.jpg}" class="mr-4 user-header" alt="通知图标">
 						<div class="media-body">
 							<h6 class="mt-0 mb-3">
 								<span>关注</span>

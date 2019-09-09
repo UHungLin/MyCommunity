@@ -38,7 +38,7 @@ spring:
     database: 2
     host: 127.0.0.1
     port: 6379
-    timeout: 300000   # 记得改掉
+    timeout: 3000
 #    commandTimeout: 0
 #    jedis:
 #      pool:
@@ -52,6 +52,13 @@ spring:
         max-idle: 10
         min-idle: 0
         max-active: 10
+
+# ElasticsearchProperties
+  data:
+    elasticsearch:
+      cluster-name: linyuhong
+      cluster-nodes: 127.0.0.1:9300
+
 
 mybatis:
   mapper-locations:
@@ -75,6 +82,27 @@ domain: http://127.0.0.1:8080
 upload: g:/work/data/upload
 
 
+# qiniu
+qiniu:
+  key:
+    access: AXo6oxv7IWSPQpVUgWgvfHT6OGxXKkZuVoJ5klWr
+    # 文件加密秘钥
+    secret: RCC-SxHEFLaVjBaMY6BNHHcQJrcfLoBiL12ajrkc
+
+  bucket:
+    header:
+      # 空间名字
+      name: mycommunity-header
+      # 空间域名 有效期30天
+      url: http://pxixdvvsz.bkt.clouddn.com
 
 
+# caffeine
+# posts 是自定义的key
+caffeine:
+  posts:
+    # 缓存15条数据
+    max-size: 15
+    # 有效期 180 s = 3 分钟
+    expire-seconds: 180
 

@@ -186,5 +186,9 @@
     values(#{username}, #{password}, #{salt}, #{email}, #{type}, #{status}, #{activationCode}, #{headerUrl}, #{createTime})
   </insert>
 
+  <update id="updateHeader">
+    update user set header_url = #{headerUrl} where id = #{userId}
+  </update>
+
 
 </mapper>

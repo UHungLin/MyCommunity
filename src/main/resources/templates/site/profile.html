@@ -1,120 +1,120 @@
-<!doctype html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head>
-	<meta charset="utf-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-	<link rel="icon" th:href="@{/img/icon.png}"/>
-	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" crossorigin="anonymous">
-	<link rel="stylesheet" th:href="@{/css/global.css}" />
-	<title>溢出网-个人主页</title>
-</head>
-<body>
-	<div class="nk-container">
-		<!-- 头部 -->
-		<header class="bg-dark sticky-top" th:replace="/site/header :: header">
+<!--<!doctype html>-->
+<!--<html lang="en" xmlns:th="http://www.thymeleaf.org">-->
+<!--<head>-->
+	<!--<meta charset="utf-8">-->
+	<!--<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">-->
+	<!--<link rel="icon" th:href="@{/img/icon.png}"/>-->
+	<!--<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" crossorigin="anonymous">-->
+	<!--<link rel="stylesheet" th:href="@{/css/global.css}" />-->
+	<!--<title>溢出网-个人主页</title>-->
+<!--</head>-->
+<!--<body>-->
+	<!--<div class="nk-container">-->
+		<!--&lt;!&ndash; 头部 &ndash;&gt;-->
+		<!--<header class="bg-dark sticky-top" th:replace="/site/header :: header">-->
 
-		</header>
+		<!--</header>-->
 
-		<!-- 内容 -->
-		<div class="main">
-			<div class="container">
-				<!-- 选项 -->
-				<div class="position-relative">
-					<ul class="nav nav-tabs">
-						<li class="nav-item">
-							<a class="nav-link active" th:href="@{|/user/profile/${user.id}|}">个人信息</a>
-						</li>
-						<li class="nav-item">
-							<a class="nav-link" th:href="@{|/user/profile/discuss/${user.id}|}" th:text="${loginUser!=null && loginUser.id!=user.id?'TA的帖子' : '我的帖子'}">我的帖子</a>
-						</li>
-						<li class="nav-item">
-							<!--<a class="nav-link" href="my-reply.html">发私信</a>-->
-							<button type="button" class="btn btn-primary btn-sm position-absolute rt-0" data-toggle="modal" data-target="#sendModal">发私信</button>
-						</li>
-					</ul>
-				</div>
+		<!--&lt;!&ndash; 内容 &ndash;&gt;-->
+		<!--<div class="main">-->
+			<!--<div class="container">-->
+				<!--&lt;!&ndash; 选项 &ndash;&gt;-->
+				<!--<div class="position-relative">-->
+					<!--<ul class="nav nav-tabs">-->
+						<!--<li class="nav-item">-->
+							<!--<a class="nav-link active" th:href="@{|/user/profile/${user.id}|}">个人信息</a>-->
+						<!--</li>-->
+						<!--<li class="nav-item">-->
+							<!--<a class="nav-link" th:href="@{|/user/profile/discuss/${user.id}|}" th:text="${loginUser!=null && loginUser.id!=user.id?'TA的帖子' : '我的帖子'}">我的帖子</a>-->
+						<!--</li>-->
+						<!--<li class="nav-item">-->
+							<!--&lt;!&ndash;<a class="nav-link" href="my-reply.html">发私信</a>&ndash;&gt;-->
+							<!--<button type="button" class="btn btn-primary btn-sm position-absolute rt-0" data-toggle="modal" data-target="#sendModal">发私信</button>-->
+						<!--</li>-->
+					<!--</ul>-->
+				<!--</div>-->
 
-				<!-- 弹出框 -->
-				<div class="modal fade" id="sendModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-					<div class="modal-dialog modal-lg" role="document">
-						<div class="modal-content">
-							<div class="modal-header">
-								<h5 class="modal-title" id="exampleModalLabel">发私信</h5>
-								<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-									<span aria-hidden="true">&times;</span>
-								</button>
-							</div>
-							<div class="modal-body">
-								<form>
-									<div class="form-group">
-										<label for="recipient-name" class="col-form-label">发给：</label>
-										<input type="text" required="required"  class="form-control" id="recipient-name"
-											   th:if="${loginUser!=null && loginUser.id!=user.id }"  readonly='readonly' th:value="${user.username}">
-										<input type="text" required="required"  class="form-control" id="recipient-name"
-											   th:unless="${loginUser!=null && loginUser.id!=user.id }">
-									</div>
-									<div class="form-group">
-										<label for="message-text" class="col-form-label">内容：</label>
-										<textarea class="form-control" required="required" id="message-text" rows="10"></textarea>
-									</div>
-								</form>
-							</div>
-							<div class="modal-footer">
-								<button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
-								<button type="button" class="btn btn-primary" id="sendBtn">发送</button>
-							</div>
-						</div>
-					</div>
-				</div>
-				<!-- 提示框 -->
-				<div class="modal fade" id="hintModal" tabindex="-1" role="dialog" aria-labelledby="hintModalLabel" aria-hidden="true">
-					<div class="modal-dialog modal-lg" role="document">
-						<div class="modal-content">
-							<div class="modal-header">
-								<h5 class="modal-title" id="hintModalLabel">提示</h5>
-							</div>
-							<div class="modal-body" id="hintBody">
-								发送完毕!
-							</div>
-						</div>
-					</div>
-				</div>
+				<!--&lt;!&ndash; 弹出框 &ndash;&gt;-->
+				<!--<div class="modal fade" id="sendModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">-->
+					<!--<div class="modal-dialog modal-lg" role="document">-->
+						<!--<div class="modal-content">-->
+							<!--<div class="modal-header">-->
+								<!--<h5 class="modal-title" id="exampleModalLabel">发私信</h5>-->
+								<!--<button type="button" class="close" data-dismiss="modal" aria-label="Close">-->
+									<!--<span aria-hidden="true">&times;</span>-->
+								<!--</button>-->
+							<!--</div>-->
+							<!--<div class="modal-body">-->
+								<!--<form>-->
+									<!--<div class="form-group">-->
+										<!--<label for="recipient-name" class="col-form-label">发给：</label>-->
+										<!--<input type="text" required="required"  class="form-control" id="recipient-name"-->
+											   <!--th:if="${loginUser!=null && loginUser.id!=user.id }"  readonly='readonly' th:value="${user.username}">-->
+										<!--<input type="text" required="required"  class="form-control" id="recipient-name"-->
+											   <!--th:unless="${loginUser!=null && loginUser.id!=user.id }">-->
+									<!--</div>-->
+									<!--<div class="form-group">-->
+										<!--<label for="message-text" class="col-form-label">内容：</label>-->
+										<!--<textarea class="form-control" required="required" id="message-text" rows="10"></textarea>-->
+									<!--</div>-->
+								<!--</form>-->
+							<!--</div>-->
+							<!--<div class="modal-footer">-->
+								<!--<button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>-->
+								<!--<button type="button" class="btn btn-primary" id="sendBtn">发送</button>-->
+							<!--</div>-->
+						<!--</div>-->
+					<!--</div>-->
+				<!--</div>-->
+				<!--&lt;!&ndash; 提示框 &ndash;&gt;-->
+				<!--<div class="modal fade" id="hintModal" tabindex="-1" role="dialog" aria-labelledby="hintModalLabel" aria-hidden="true">-->
+					<!--<div class="modal-dialog modal-lg" role="document">-->
+						<!--<div class="modal-content">-->
+							<!--<div class="modal-header">-->
+								<!--<h5 class="modal-title" id="hintModalLabel">提示</h5>-->
+							<!--</div>-->
+							<!--<div class="modal-body" id="hintBody">-->
+								<!--发送完毕!-->
+							<!--</div>-->
+						<!--</div>-->
+					<!--</div>-->
+				<!--</div>-->
 
 
-				<!-- 个人信息 -->
-				<div class="media mt-5">
-					<img th:src="${user.headerUrl}" class="align-self-start mr-4 rounded-circle" alt="用户头像" style="width:50px;">
-					<div class="media-body">
-						<h5 class="mt-0 text-warning">
-							<span th:utext="${user.username}">user</span>
-							<input type="hidden" id="entityId" th:value="${user.id}"/>
-							<button type="button" th:class="|btn ${hasFollowed?'btn-secondary':'btn-info'} btn-sm float-right mr-5 follow-btn|"
-									th:text="${hasFollowed?'已关注':'关注TA'}" th:if="${loginUser!=null&&loginUser.id!=user.id}">关注TA</button>
-						</h5>
-						<div class="text-muted mt-3">
-							<span>注册于 <i class="text-muted" th:text="${#dates.format(user.createTime,'yyyy-MM-dd HH:mm:ss')}">2015-06-12 15:20:12</i></span>
-						</div>
-						<div class="text-muted mt-3 mb-5">
-							<span>关注了 <a class="text-primary" th:href="@{|/followees/${user.id}|}" th:text="${followeeCount}">5</a> 人</span>
-							<span class="ml-4">关注者 <a class="text-primary" th:href="@{|/followers/${user.id}|}" th:text="${followerCount}">123</a> 人</span>
-							<span class="ml-4">获得了 <i class="text-danger" th:text="${likeCount}">87</i> 个赞</span>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
+				<!--&lt;!&ndash; 个人信息 &ndash;&gt;-->
+				<!--<div class="media mt-5">-->
+					<!--<img th:src="${user.headerUrl}" class="align-self-start mr-4 rounded-circle" alt="用户头像" style="width:50px;">-->
+					<!--<div class="media-body">-->
+						<!--<h5 class="mt-0 text-warning">-->
+							<!--<span th:utext="${user.username}">user</span>-->
+							<!--<input type="hidden" id="entityId" th:value="${user.id}"/>-->
+							<!--<button type="button" th:class="|btn ${hasFollowed?'btn-secondary':'btn-info'} btn-sm float-right mr-5 follow-btn|"-->
+									<!--th:text="${hasFollowed?'已关注':'关注TA'}" th:if="${loginUser!=null&&loginUser.id!=user.id}">关注TA</button>-->
+						<!--</h5>-->
+						<!--<div class="text-muted mt-3">-->
+							<!--<span>注册于 <i class="text-muted" th:text="${#dates.format(user.createTime,'yyyy-MM-dd HH:mm:ss')}">2015-06-12 15:20:12</i></span>-->
+						<!--</div>-->
+						<!--<div class="text-muted mt-3 mb-5">-->
+							<!--<span>关注了 <a class="text-primary" th:href="@{|/followees/${user.id}|}" th:text="${followeeCount}">5</a> 人</span>-->
+							<!--<span class="ml-4">关注者 <a class="text-primary" th:href="@{|/followers/${user.id}|}" th:text="${followerCount}">123</a> 人</span>-->
+							<!--<span class="ml-4">获得了 <i class="text-danger" th:text="${likeCount}">87</i> 个赞</span>-->
+						<!--</div>-->
+					<!--</div>-->
+				<!--</div>-->
+			<!--</div>-->
+		<!--</div>-->
 
-		<!-- 尾部 -->
-		<footer class="bg-dark" th:replace="/site/footer :: footer">
+		<!--&lt;!&ndash; 尾部 &ndash;&gt;-->
+		<!--<footer class="bg-dark" th:replace="/site/footer :: footer">-->
 
-		</footer>
-	</div>
+		<!--</footer>-->
+	<!--</div>-->
 
-	<script src="https://code.jquery.com/jquery-3.3.1.min.js" crossorigin="anonymous"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" crossorigin="anonymous"></script>
-	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" crossorigin="anonymous"></script>
-	<script th:src="@{/js/global.js}"></script>
-	<script th:src="@{/js/profile.js}"></script>
-	<script th:src="@{/js/letter.js}"></script>
-</body>
-</html>
+	<!--<script src="https://code.jquery.com/jquery-3.3.1.min.js" crossorigin="anonymous"></script>-->
+	<!--<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" crossorigin="anonymous"></script>-->
+	<!--<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" crossorigin="anonymous"></script>-->
+	<!--<script th:src="@{/js/global.js}"></script>-->
+	<!--<script th:src="@{/js/profile.js}"></script>-->
+	<!--<script th:src="@{/js/letter.js}"></script>-->
+<!--</body>-->
+<!--</html>-->

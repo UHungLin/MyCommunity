@@ -9,9 +9,11 @@ import fun.linyuhong.myCommunity.entity.DiscussPost;
 import fun.linyuhong.myCommunity.service.ICommentService;
 import fun.linyuhong.myCommunity.service.IDiscussPostService;
 import fun.linyuhong.myCommunity.util.HostHolder;
+import fun.linyuhong.myCommunity.util.RedisKeyUtil;
 import fun.linyuhong.myCommunity.util.XORUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -35,6 +37,9 @@ public class CommentController {
 
     @Autowired
     private IDiscussPostService iDiscussPostService;
+
+    @Autowired
+    private RedisTemplate redisTemplate;
 
 
     @RequestMapping(path = "/add/{discussPostId}", method = RequestMethod.POST)
@@ -60,6 +65,7 @@ public class CommentController {
 
         /**
          * 触发评论事件
+         *
          */
         EventModel eventModel = new EventModel(EventType.COMMENT)
                 .setActorId(XORUtil.encryptId(hostHolder.getUser().getId(), Const.getIdEncodeKeys.userIdKeys))
@@ -74,6 +80,24 @@ public class CommentController {
             eventModel.setEntityUserId(target.getUserId());
         }
         eventProducer.fireEvent(eventModel);
+
+
+
+        /**
+         * 触发 添加帖子评论 事件，将修改后的帖子加到 ES 服务器
+         */
+        if (comment.getEntityType() == Const.entityType.ENTITY_TYPE_POST) {
+            eventModel = new EventModel(EventType.PUBLISH)
+                    .setActorId(hostHolder.getUser().getId())
+                    .setEntityType(Const.entityType.ENTITY_TYPE_POST)
+                    .setEntityId(XORUtil.encryptId(discussPostId, Const.getIdEncodeKeys.postIdKeys));
+            eventProducer.fireEvent(eventModel);
+
+            // 计算帖子分数
+            String redisKey = RedisKeyUtil.getPostScoreKey();
+            redisTemplate.opsForSet().add(redisKey, XORUtil.encryptId(discussPostId, Const.getIdEncodeKeys.postIdKeys));
+        }
+
 
         return "redirect:/discuss/detail/" + discussPostId;
     }

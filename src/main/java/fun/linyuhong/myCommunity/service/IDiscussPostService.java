@@ -9,7 +9,7 @@ import java.util.Map;
 
 public interface IDiscussPostService {
 
-    List<Map<String, Object>> selectDiscussPosts(int userId, int orderModel, int offset, int limit);
+    List<DiscussPost> selectDiscussPosts(int userId, int orderMode, int offset, int limit);
 
     int findDiscussPostRows(int userId);
 
@@ -18,5 +18,11 @@ public interface IDiscussPostService {
     DiscussPost getDiscussPost(Integer discussPostId);
 
     DiscussPost findDiscussPostById(int id);
+
+    int updateType(int id, int type);
+
+    int updateStatus(int id, int status);
+
+    int updateScore(int id, double score);
 
 }

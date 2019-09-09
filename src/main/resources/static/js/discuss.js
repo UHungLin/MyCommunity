@@ -29,7 +29,8 @@ function setTop() {
         function(data) {
             data = $.parseJSON(data);
             if(data.code == 0) {
-                $("#topBtn").attr("disabled", "disabled");
+                // $("#topBtn").attr("disabled", "disabled");
+                $("#topBtn").text(data.type==1 ? '已置顶' : '置顶');
             } else {
                 alert(data.msg);
             }
@@ -45,7 +46,8 @@ function setWonderful() {
         function(data) {
             data = $.parseJSON(data);
             if(data.code == 0) {
-                $("#wonderfulBtn").attr("disabled", "disabled");
+                // $("#wonderfulBtn").attr("disabled", "disabled");
+                $("#wonderfulBtn").text(data.status==1 ? '已加精' : '加精');
             } else {
                 alert(data.msg);
             }
@@ -68,3 +70,4 @@ function setDelete() {
         }
     );
 }
+

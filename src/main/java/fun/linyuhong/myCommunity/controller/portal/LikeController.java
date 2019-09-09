@@ -7,8 +7,10 @@ import fun.linyuhong.myCommunity.common.Const;
 import fun.linyuhong.myCommunity.service.ILikeService;
 import fun.linyuhong.myCommunity.util.HostHolder;
 import fun.linyuhong.myCommunity.util.JSONUtil;
+import fun.linyuhong.myCommunity.util.RedisKeyUtil;
 import fun.linyuhong.myCommunity.util.XORUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -32,6 +34,9 @@ public class LikeController {
 
     @Autowired
     private EventProducer eventProducer;
+
+    @Autowired
+    private RedisTemplate redisTemplate;
 
 
     /**
@@ -78,6 +83,12 @@ public class LikeController {
                     .setEntityUserId(entityUserId)
                     .setData("postId", XORUtil.encryptId(postId, Const.getIdEncodeKeys.postIdKeys));  // postId 为帖子Id，点击查看详情时用到 对于点赞对象为 comment 时有用
             eventProducer.fireEvent(eventModel);
+        }
+
+        if(entityType == Const.entityType.ENTITY_TYPE_POST) {  // 只计算对帖子点赞的分
+            // 计算帖子分数
+            String redisKey = RedisKeyUtil.getPostScoreKey();
+            redisTemplate.opsForSet().add(redisKey, XORUtil.encryptId(postId, Const.getIdEncodeKeys.postIdKeys));
         }
 
         return JSONUtil.getJSONString(0, null, map);

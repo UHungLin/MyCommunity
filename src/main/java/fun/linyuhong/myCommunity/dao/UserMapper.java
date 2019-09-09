@@ -26,4 +26,6 @@ public interface UserMapper {
 
     int insertUser(User user);
 
+    int updateHeader(int userId, String headerUrl);
+
 }

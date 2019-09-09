@@ -17,6 +17,10 @@ public enum  EventType {
      * 注册
      */
     REGISTER("register"),
+    /**
+     * 删帖
+     */
+    DELETE("delete"),
 
     /**
      * 表示系统通知，包括注册、登录 等等等

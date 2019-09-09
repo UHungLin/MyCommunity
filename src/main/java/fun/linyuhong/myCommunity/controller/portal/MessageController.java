@@ -86,9 +86,6 @@ public class MessageController {
         int noticeUnreadCount = iMessageService.findNoticeUnreadCount(userId, null);
         model.addAttribute("noticeUnreadCount", noticeUnreadCount);
 
-        // 总的未读数量
-        int allUnreadCount = letterUnreadCount + noticeUnreadCount;
-        model.addAttribute("allUnreadCount", allUnreadCount);
 
         return "/site/letter";
     }
@@ -136,9 +133,7 @@ public class MessageController {
         // 未读系统通知数量
         int noticeUnreadCount = iMessageService.findNoticeUnreadCount(userId, null);
         model.addAttribute("noticeUnreadCount", noticeUnreadCount);
-        // 总的未读数量
-        int allUnreadCount = letterUnreadCount + noticeUnreadCount;
-        model.addAttribute("allUnreadCount", allUnreadCount);
+
 
         return "/site/letter-detail";
     }
@@ -264,8 +259,6 @@ public class MessageController {
         int noticeUnreadCount = iMessageService.findNoticeUnreadCount(userId, null);
         model.addAttribute("noticeUnreadCount", noticeUnreadCount);
 
-        int allUnreadCount = letterUnreadCount + noticeUnreadCount;
-        model.addAttribute("allUnreadCount", allUnreadCount);
 
         return "/site/notice";
 

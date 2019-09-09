@@ -1,77 +1,77 @@
-<!doctype html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head>
-	<meta charset="utf-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-	<link rel="icon" th:href="@{/img/icon.png}"/>
-	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" crossorigin="anonymous">
-	<link rel="stylesheet" th:href="@{/css/global.css}" />
-	<title>溢出网-个人主页</title>
-</head>
-<body>
-	<div class="nk-container">
-		<!-- 头部 -->
-		<header class="bg-dark sticky-top" th:replace="/site/header :: header">
+<!--<!doctype html>-->
+<!--<html lang="en" xmlns:th="http://www.thymeleaf.org">-->
+<!--<head>-->
+	<!--<meta charset="utf-8">-->
+	<!--<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">-->
+	<!--<link rel="icon" th:href="@{/img/icon.png}"/>-->
+	<!--<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" crossorigin="anonymous">-->
+	<!--<link rel="stylesheet" th:href="@{/css/global.css}" />-->
+	<!--<title>溢出网-个人主页</title>-->
+<!--</head>-->
+<!--<body>-->
+	<!--<div class="nk-container">-->
+		<!--&lt;!&ndash; 头部 &ndash;&gt;-->
+		<!--<header class="bg-dark sticky-top" th:replace="/site/header :: header">-->
 
-		</header>
+		<!--</header>-->
 
-		<!-- 内容 -->
-		<div class="main">
-			<div class="container">
-				<!-- 选项 -->
-				<div class="position-relative">
-					<ul class="nav nav-tabs">
-						<li class="nav-item">
-							<a class="nav-link" th:href="@{|/user/profile/${user.id}|}">个人信息</a>
-						</li>
-						<li class="nav-item">
-							<a class="nav-link active" th:href="@{|/user/profile/discuss/${user.id}|}" th:text="${loginUser!=null && loginUser.id!=user.id?'TA的帖子' : '我的帖子'}">我的帖子</a>
-						</li>
-						<li class="nav-item">
-							<!--<a class="nav-link" href="my-reply.html">给TA发私信</a>-->
-						</li>
-					</ul>
-					<a th:href="@{|/user/profile/${userId}|}" class="text-muted position-absolute rt-0" th:text="${loginUser!=null && loginUser.id!=user.id?'返回TA的主页&gt;' : '返回我的主页&gt;'}">返回个人主页&gt;</a>
-				</div>
-				<!-- 我的帖子 -->
-				<div class="mt-4">
-					<h6><b class="square"></b><b th:text="${user.username}"></b> 发布的帖子(<b th:text="${discussPostCounts}">93</b>)</h6>
-					<ul class="list-unstyled mt-4 pl-3 pr-3">
-						<li class="border-bottom pb-3 mt-4" th:each="map:${discussPost}">
-							<div class="font-size-16 text-info">
-								<a th:href="@{|/discuss/detail/${map.post.id}|}" class="text-info" th:text="${map.post.title}">备战春招，面试刷题跟他复习，一个月全搞定！</a>
-							</div>
-							<!--<div class="mt-1 font-size-14">-->
-								<!--金三银四的金三已经到了，你还沉浸在过年的喜悦中吗？-->
-								<!--如果是，那我要让你清醒一下了：目前大部分公司已经开启了内推，正式网申也将在3月份陆续开始，金三银四，春招的求职黄金时期已经来啦！！！-->
-								<!--再不准备，作为19应届生的你可能就找不到工作了。。。作为20届实习生的你可能就找不到实习了。。。-->
-								<!--现阶段时间紧，任务重，能做到短时间内快速提升的也就只有算法了，-->
-								<!--那么算法要怎么复习？重点在哪里？常见笔试面试算法题型和解题思路以及最优代码是怎样的？-->
-								<!--跟左程云老师学算法，不仅能解决以上所有问题，还能在短时间内得到最大程度的提升！！！								-->
+		<!--&lt;!&ndash; 内容 &ndash;&gt;-->
+		<!--<div class="main">-->
+			<!--<div class="container">-->
+				<!--&lt;!&ndash; 选项 &ndash;&gt;-->
+				<!--<div class="position-relative">-->
+					<!--<ul class="nav nav-tabs">-->
+						<!--<li class="nav-item">-->
+							<!--<a class="nav-link" th:href="@{|/user/profile/${user.id}|}">个人信息</a>-->
+						<!--</li>-->
+						<!--<li class="nav-item">-->
+							<!--<a class="nav-link active" th:href="@{|/user/profile/discuss/${user.id}|}" th:text="${loginUser!=null && loginUser.id!=user.id?'TA的帖子' : '我的帖子'}">我的帖子</a>-->
+						<!--</li>-->
+						<!--<li class="nav-item">-->
+							<!--&lt;!&ndash;<a class="nav-link" href="my-reply.html">给TA发私信</a>&ndash;&gt;-->
+						<!--</li>-->
+					<!--</ul>-->
+					<!--<a th:href="@{|/user/profile/${userId}|}" class="text-muted position-absolute rt-0" th:text="${loginUser!=null && loginUser.id!=user.id?'返回TA的主页&gt;' : '返回我的主页&gt;'}">返回个人主页&gt;</a>-->
+				<!--</div>-->
+				<!--&lt;!&ndash; 我的帖子 &ndash;&gt;-->
+				<!--<div class="mt-4">-->
+					<!--<h6><b class="square"></b><b th:text="${user.username}"></b> 发布的帖子(<b th:text="${discussPostCounts}">93</b>)</h6>-->
+					<!--<ul class="list-unstyled mt-4 pl-3 pr-3">-->
+						<!--<li class="border-bottom pb-3 mt-4" th:each="map:${discussPost}">-->
+							<!--<div class="font-size-16 text-info">-->
+								<!--<a th:href="@{|/discuss/detail/${map.post.id}|}" class="text-info" th:text="${map.post.title}">备战春招，面试刷题跟他复习，一个月全搞定！</a>-->
 							<!--</div>-->
-							<div class="text-right font-size-12 text-muted">
-								赞 <i class="mr-3" th:text="${map.likeCount}">11</i> 发布于 <b th:text="${#dates.format(map.post.createTime,'yyyy-MM-dd HH:mm:ss')}">2019-04-15 10:10:10</b>
-							</div>
-						</li>
+							<!--&lt;!&ndash;<div class="mt-1 font-size-14">&ndash;&gt;-->
+								<!--&lt;!&ndash;金三银四的金三已经到了，你还沉浸在过年的喜悦中吗？&ndash;&gt;-->
+								<!--&lt;!&ndash;如果是，那我要让你清醒一下了：目前大部分公司已经开启了内推，正式网申也将在3月份陆续开始，金三银四，春招的求职黄金时期已经来啦！！！&ndash;&gt;-->
+								<!--&lt;!&ndash;再不准备，作为19应届生的你可能就找不到工作了。。。作为20届实习生的你可能就找不到实习了。。。&ndash;&gt;-->
+								<!--&lt;!&ndash;现阶段时间紧，任务重，能做到短时间内快速提升的也就只有算法了，&ndash;&gt;-->
+								<!--&lt;!&ndash;那么算法要怎么复习？重点在哪里？常见笔试面试算法题型和解题思路以及最优代码是怎样的？&ndash;&gt;-->
+								<!--&lt;!&ndash;跟左程云老师学算法，不仅能解决以上所有问题，还能在短时间内得到最大程度的提升！！！								&ndash;&gt;-->
+							<!--&lt;!&ndash;</div>&ndash;&gt;-->
+							<!--<div class="text-right font-size-12 text-muted">-->
+								<!--赞 <i class="mr-3" th:text="${map.likeCount}">11</i> 发布于 <b th:text="${#dates.format(map.post.createTime,'yyyy-MM-dd HH:mm:ss')}">2019-04-15 10:10:10</b>-->
+							<!--</div>-->
+						<!--</li>-->
 
-					</ul>
-					<!-- 分页 -->
-					<nav class="mt-5" th:replace="/site/pagination :: nav">
+					<!--</ul>-->
+					<!--&lt;!&ndash; 分页 &ndash;&gt;-->
+					<!--<nav class="mt-5" th:replace="/site/pagination :: nav">-->
 
-					</nav>
-				</div>				
-			</div>
-		</div>
+					<!--</nav>-->
+				<!--</div>				-->
+			<!--</div>-->
+		<!--</div>-->
 
-		<!-- 尾部 -->
-		<footer class="bg-dark" th:replace="/site/footer :: footer">
+		<!--&lt;!&ndash; 尾部 &ndash;&gt;-->
+		<!--<footer class="bg-dark" th:replace="/site/footer :: footer">-->
 
-		</footer>
-	</div>
+		<!--</footer>-->
+	<!--</div>-->
 
-	<script src="https://code.jquery.com/jquery-3.3.1.min.js" crossorigin="anonymous"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" crossorigin="anonymous"></script>
-	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" crossorigin="anonymous"></script>
-	<script th:src="@{/js/global.js}"></script>
-</body>
-</html>
+	<!--<script src="https://code.jquery.com/jquery-3.3.1.min.js" crossorigin="anonymous"></script>-->
+	<!--<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" crossorigin="anonymous"></script>-->
+	<!--<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" crossorigin="anonymous"></script>-->
+	<!--<script th:src="@{/js/global.js}"></script>-->
+<!--</body>-->
+<!--</html>-->
