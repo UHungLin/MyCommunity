@@ -32,3 +32,7 @@ Redis | 分布式缓存
 Thymeleaf | 模板引擎
 Quartz | 定时任务支持
 
+### 许可证
+[Apache License 2.0](https://github.com/UHungLin/MyCommunity/LICENSE)
+
+Copyright (c) 2018-2019 UHungLin
