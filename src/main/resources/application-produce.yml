@@ -1,0 +1,95 @@
+# ServerProperties
+server:
+  port: 8080
+  servlet:
+    # url访问路径名
+    context-path:
+
+
+spring:
+  # DataSourceProperties
+  datasource:
+    driver-class-name=com: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/myCommunity(数据库名)?characterEncoding=utf-8&useSSL=false&serverTimezone=Hongkong
+    username: 用户名
+    password: 密码
+#    默认数据源
+    type: com.zaxxer.hikari.HikariDataSource
+    hikari:
+      maximum-pool-size: 15
+      minimum-idle: 5
+      idle-timeout: 2000
+
+  # ThymeleafProperties
+  thymeleaf:
+    cache: true
+
+  # MailProperties
+  mail:
+    host: smtp.qq.com
+    port: 465
+    username: xxxxxx@qq.com
+    password: xxxxxx
+    protocol: smtps
+    properties.mail.smtp.ssl.enable: true
+
+  # RedisProperties
+  redis:
+    database: 1
+    host: 127.0.0.1
+    port: 6379
+    timeout: 50000
+
+    lettuce:
+      pool:
+        max-wait: -1  # 连接池最大阻塞等待时间
+        max-idle: 10
+        min-idle: 0
+        max-active: 10
+
+# ElasticsearchProperties
+#  data:
+#    elasticsearch:
+#      cluster-name:
+#      cluster-nodes: 127.0.0.1:9300
+
+
+mybatis:
+  mapper-locations:
+    - classpath:mapper/*.xml
+  type-aliases-package: fun.linyuhong.myCommunity.entity
+  configuration:
+    useGeneratedKeys: true
+    mapUnderscoreToCamelCase: true
+
+
+# 配置发送邮件时的域名
+domain: 服务器IP地址
+# 上传头像的域名
+upload: /tmp/uploads
+
+
+# qiniu
+qiniu:
+  key:
+    access:
+    # 文件加密秘钥
+    secret:
+
+  bucket:
+    header:
+      # 空间名字
+      name: mycommunity-header(自定义)
+      # 空间域名 有效期30天
+      url: http://pxixdvvsz.bkt.clouddn.com
+
+
+# caffeine
+# posts 是自定义的key
+caffeine:
+  posts:
+    # 缓存15条数据
+    max-size: 15
+    # 有效期 180 s = 3 分钟
+    expire-seconds: 180
+

@@ -18,114 +18,127 @@
     <title>溢出网-我的主页</title>
 
 </head>
-    <body>
+<body>
 
 
-        <div class="head">
-            <img th:src="@{/img/head.jpg}" />
+<div class="head">
+    <img th:src="@{/img/head.jpg}" />
+</div>
+
+<div class="user">
+    <img th:src="${user.headerUrl}" alt="点击图片修改头像" class="img-rounded headImg">
+    <div class="right">
+        <span class="userName" th:utext="${user.username}">爱吃西瓜的小黄瓜</span></br>
+        <input type="hidden" id="entityId" th:value="${user.id}"/>
+        <span class="motto">我们的口号是不蛀牙</span></br>
+        <!--<img th:src="@{/img/profession.jpg}"><span>&nbsp;职位</span></br>-->
+        &nbsp;<img th:src="@{/img/like.png}"><span>&nbsp;&nbsp;<span th:text="${likeCount}">赞</span></span></br>
+
+        <h5 class="mt-0 text-warning" style="margin-right: 30px">
+            <!--<span th:utext="${user.username}">nowcoder</span>-->
+            <input type="hidden" id="entityId" th:value="${user.id}"/>
+            <button type="button" th:class="|btn ${hasFollowed?'btn-secondary':'btn-info'} btn-sm float-right mr-5 follow-btn|"
+                    th:text="${hasFollowed?'已关注':'关注TA'}" th:if="${loginUser!=null&&loginUser.id!=user.id}">关注TA</button>
+        </h5>
+    </div>
+</div>
+
+
+<a class="kele" href="/" style="float: left">首页</a>
+
+<style>
+    .kele:before{ position: absolute; content: " "; border: transparent 14px solid; border-width: 13px 8px ; border-right-color: #CCC; top: 1px; left: -16px; height: 0; width: 0; }
+    .kele{ position: relative; width: 40px; height: 28px; background: #EEE; border-radius: 5px;  margin: 30px; text-align: center; line-height: 28px; color: #999; font-size: 14px; border: 1px solid #CCC; }
+    .kele:after{ position: absolute; content: " "; border: transparent 13px solid;  border-width:  12px 8px; border-right-color: #EEE; top: 2px; left: -15px; height: 0; width: 0; }
+
+</style>
+
+
+
+<div class="classify">
+    <div class="tags">
+        <ul>
+            <li class="tagItem show" onclick="changeLi(1);changeDiv(1)">动态&nbsp;<span th:text="${discussPostCounts}">93</span></li>
+        </ul>
+        <hr>
+    </div>
+    <div class="active" id="active">
+        <!--<div class="myTag">-->
+        <!--<p th:href="@{|/user/profile/discuss/${user.id}|}" th:text="${loginUser!=null &&-->
+        <!--loginUser.id!=user.id?'TA的动态' : '我的动态'}">我的动态</p>-->
+        <!--<hr>-->
+        <!--</div>-->
+        <!-- 我的帖子 -->
+        <div class="mt-4">
+            <!--<h6><b class="square"></b><b th:text="${user.username}"></b> 发布的帖子(<b th:text="${discussPostCounts}">93</b>)</h6>-->
+            <ul class="list-unstyled mt-4 pl-3 pr-3">
+                <li class="border-bottom pb-3 mt-4" th:each="map:${discussPost}">
+                    <div class="font-size-16 text-info">
+                        <a th:href="@{|/discuss/detail/${map.post.id}|}" class="text-info" th:text="${map.post.title}">备战春招，面试刷题跟他复习，一个月全搞定！</a>
+                    </div>
+                    <div class="text-right font-size-12 text-muted">
+                        赞 <i class="mr-3" th:text="${map.likeCount}">11</i> 发布于 <b th:text="${#dates.format(map.post.createTime,'yyyy-MM-dd HH:mm:ss')}">2019-04-15 10:10:10</b>
+                    </div>
+                </li>
+
+            </ul>
+            <!-- 分页 -->
+            <nav class="mt-5" th:replace="/site/pagination :: nav">
+
+            </nav>
         </div>
 
-        <div class="user">
-            <img th:src="${user.headerUrl}" alt="点击图片修改头像" class="img-rounded headImg">
-            <div class="right">
-                <span class="userName" th:utext="${user.username}">爱吃西瓜的小黄瓜</span></br>
-                <input type="hidden" id="entityId" th:value="${user.id}"/>
-                <span class="motto">我们的口号是不蛀牙</span></br>
-                <!--<img th:src="@{/img/profession.jpg}"><span>&nbsp;职位</span></br>-->
-                &nbsp;<img th:src="@{/img/like.png}"><span>&nbsp;&nbsp;<span th:text="${likeCount}">赞</span></span></br>
-                <img th:src="@{/img/female.jpg}"> | <img th:src="@{/img/male.png}">
-            </div>
-        </div>
+    </div>
+
+    <div class="hidden" id="community">
+        <!--<div class="myTag">-->
+        <!--<p>我的圈子</p>-->
+        <!--<hr>-->
+        <!--</div>-->
+        <h3>功能暂无</h3>
+    </div>
+
+    <div class="hidden" id="leaveMes">
+        <!--<div class="myTag">-->
+        <!--<p>我的留言</p>-->
+        <!--<hr>-->
+        <!--</div>-->
+        <h3>功能暂无</h3>
+    </div>
+
+</div>
+
+<div class="concern">
+    <div>
+        <span>关注了</span>
+        <span>|</span>
+        <span th:href="@{|/followers/${user.id}|}">关注者</span>
+    </div>
+    <div class="number">
+        <span><a th:href="@{|/followees/${user.id}|}" th:text="${followeeCount}">2</a></span>
+        <span></span>
+        <span><a th:href="@{|/followers/${user.id}|}" th:text="${followerCount}">3</a></span>
+    </div>
+</div>
 
 
 
 
 
+<script src="https://code.jquery.com/jquery-3.3.1.min.js" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bs-custom-file-input/dist/bs-custom-file-input.js" crossorigin="anonymous"></script>
+<script th:src="@{/js/global.js}"></script>
+<script th:src="@{/js/setting.js}"></script>
+<script th:src="@{/js/profile.js}"></script>
+<script th:src="@{/js/letter.js}"></script>
+<script>
 
-        <div class="classify">
-            <div class="tags">
-                <ul>
-                    <li class="tagItem show" onclick="changeLi(1);changeDiv(1)">动态&nbsp;<span th:text="${discussPostCounts}">93</span></li>
-                    <li class="tagItem" onclick="changeLi(2);changeDiv(2)" >我的圈子&nbsp;<span>4</span></li>
-                    <li class="tagItem" onclick="changeLi(3);changeDiv(3)" >我的留言&nbsp;<span>3</span></li>
-                </ul>
-                <hr>
-            </div>
-            <div class="active" id="active">
-                <!--<div class="myTag">-->
-                    <!--<p th:href="@{|/user/profile/discuss/${user.id}|}" th:text="${loginUser!=null &&-->
-                    <!--loginUser.id!=user.id?'TA的动态' : '我的动态'}">我的动态</p>-->
-                    <!--<hr>-->
-                <!--</div>-->
-                <!-- 我的帖子 -->
-                <div class="mt-4">
-                    <!--<h6><b class="square"></b><b th:text="${user.username}"></b> 发布的帖子(<b th:text="${discussPostCounts}">93</b>)</h6>-->
-                    <ul class="list-unstyled mt-4 pl-3 pr-3">
-                        <li class="border-bottom pb-3 mt-4" th:each="map:${discussPost}">
-                            <div class="font-size-16 text-info">
-                                <a th:href="@{|/discuss/detail/${map.post.id}|}" class="text-info" th:text="${map.post.title}">备战春招，面试刷题跟他复习，一个月全搞定！</a>
-                            </div>
-                            <div class="text-right font-size-12 text-muted">
-                                赞 <i class="mr-3" th:text="${map.likeCount}">11</i> 发布于 <b th:text="${#dates.format(map.post.createTime,'yyyy-MM-dd HH:mm:ss')}">2019-04-15 10:10:10</b>
-                            </div>
-                        </li>
+    $(function(){
+        bsCustomFileInput.init();
+    });
+</script>
 
-                    </ul>
-                    <!-- 分页 -->
-                    <nav class="mt-5" th:replace="/site/pagination :: nav">
-
-                    </nav>
-                </div>
-
-            </div>
-
-            <div class="hidden" id="community">
-                <!--<div class="myTag">-->
-                    <!--<p>我的圈子</p>-->
-                    <!--<hr>-->
-                <!--</div>-->
-                <h3>功能暂无</h3>
-            </div>
-
-            <div class="hidden" id="leaveMes">
-                <!--<div class="myTag">-->
-                    <!--<p>我的留言</p>-->
-                    <!--<hr>-->
-                <!--</div>-->
-                <h3>功能暂无</h3>
-            </div>
-
-        </div>
-
-        <div class="concern">
-            <div>
-                <span>关注了</span>
-                <span>|</span>
-                <span th:href="@{|/followers/${user.id}|}">关注者</span>
-            </div>
-            <div class="number">
-                <span><a th:href="@{|/followees/${user.id}|}" th:text="${followeeCount}">2</a></span>
-                <span></span>
-                <span><a th:href="@{|/followers/${user.id}|}" th:text="${followerCount}">3</a></span>
-            </div>
-        </div>
-
-
-
-
-
-        <script src="https://code.jquery.com/jquery-3.3.1.min.js" crossorigin="anonymous"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" crossorigin="anonymous"></script>
-        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" crossorigin="anonymous"></script>
-        <script src="https://cdn.jsdelivr.net/npm/bs-custom-file-input/dist/bs-custom-file-input.js" crossorigin="anonymous"></script>
-        <script th:src="@{/js/global.js}"></script>
-        <script th:src="@{/js/setting.js}"></script>
-        <script>
-
-            $(function(){
-                bsCustomFileInput.init();
-            });
-        </script>
-
-    </body>
+</body>
 </html>
