@@ -11,7 +11,7 @@ http://106.15.248.31/
 用户名: 时崎狂三  
 密码: 123456  
 (PS: 或者其它9个精灵名字)  
-(PS: 七月云的免费存储一个月过期了，所以头像图片显示不出来  by.11.18)
+(PS: 项目现在已经不能注册，请使用现有账号密码登录  by.12.21)
 
 ### 项目截图  
 ![](https://note.youdao.com/yws/public/resource/708a3ced8b76b8abfd07973941b1303f/xmlnote/41CF5EFC37804BDB9F12E25FD01F1EDE/11272)
