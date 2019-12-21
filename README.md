@@ -14,13 +14,13 @@ http://106.15.248.31/
 (PS: 项目现在已经不能注册，请使用现有账号密码登录  by.12.21)
 
 ### 项目截图  
-![](https://note.youdao.com/yws/public/resource/708a3ced8b76b8abfd07973941b1303f/xmlnote/41CF5EFC37804BDB9F12E25FD01F1EDE/11272)
+![](http://mycommunity.oss-cn-shanghai.aliyuncs.com/clipboard.png)
 
-![](https://note.youdao.com/yws/public/resource/708a3ced8b76b8abfd07973941b1303f/xmlnote/9E42CD7C0A0F490A99DB4FE4470C12F1/11279)
+![](http://mycommunity.oss-cn-shanghai.aliyuncs.com/1569414012%281%29.png)
 
-![](https://note.youdao.com/yws/public/resource/708a3ced8b76b8abfd07973941b1303f/xmlnote/CB5EA06675D14CB4972BB1E802409172/11274)
+![](http://mycommunity.oss-cn-shanghai.aliyuncs.com/clipboard%20%281%29.png)
 
-![](https://note.youdao.com/yws/public/resource/708a3ced8b76b8abfd07973941b1303f/xmlnote/61A0D0D50B344B859C85EC37BB6A049B/11276)
+![](http://mycommunity.oss-cn-shanghai.aliyuncs.com/clipboard%20%282%29.png)
 
 ### 用到的技术
 技术 | 名称 
