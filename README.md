@@ -4,6 +4,7 @@
 MyCommunity 是一个模仿知乎的简单问答网站，基于SpringBoot+MyBatis实现。
 用户可以发表帖子、评论、点赞、私信、相互关注、查看用户信息等。
 同时，网站拥有敏感词过滤、热门帖子排行、搜索帖子、系统消息通知等功能。  
+（新项目：[番剧下载器](https://github.com/UHungLin/AnimeDownloader)，这个比较好玩 :smile:)）
 
 # 项目演示  
 ### 项目演示地址
